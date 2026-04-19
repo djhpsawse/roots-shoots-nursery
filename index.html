@@ -219,7 +219,7 @@
 let isAdmin = false;
 
 let products = [
-  {name:"rocket cultivated", price:2, image:"https://cdn.diygarden.co.uk/wp-content/uploads/2021/07/shutterstock_760063117.jpg"},
+  {name:"rocket cultivated", price:2.00, image:"https://cdn.diygarden.co.uk/wp-content/uploads/2021/07/shutterstock_760063117.jpg"},
   {name:"red lettuce salad bowl", price:2.50, image:"https://bentleyseeds.com/cdn/shop/files/shutterstock_22360084-red-salad-bowl-lettuce.jpg?v=1747665051&width=2000"},
   {name:"carrot nantes 2", price:3.50, image:"https://www.gardenersdream.co.uk/cdn/shop/files/00-GardenersDream-Seeds-Carrot-Early-Nantes-2.jpg?v=1761916647"}
 ];
@@ -234,7 +234,7 @@ function renderProducts(){
       <div class="card">
         <img src="${p.image}"/>
         <h3>${p.name}</h3>
-        <p>£${p.price}</p>
+        <p>£${p.price.toFixed(2)}</p>
         <button onclick="addItem(${i})">Add to Cart</button>
       </div>`;
   });
@@ -259,7 +259,7 @@ function updateCart(){
     total += parseFloat(c.price);
     div.innerHTML += `
       <div class='cart-item'>
-        ${c.name} £${c.price}
+        ${c.name} £${c.price.toFixed(2)}
         <button class='remove' onclick='removeItem(${i})'>X</button>
       </div>`;
   });
@@ -302,9 +302,11 @@ function logout(){
 function addProduct(){
   if(!isAdmin) return;
 
+  let priceValue = parseFloat(document.getElementById('price').value);
+
   products.push({
     name:document.getElementById('name').value,
-    price:parseFloat(document.getElementById('price').value),
+    price:parseFloat(priceValue.toFixed(2)),
     image:document.getElementById('image').value
   });
 
