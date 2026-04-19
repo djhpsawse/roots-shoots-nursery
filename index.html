@@ -203,7 +203,7 @@
 <div id="cartPanel">
   <h2>Your Cart</h2>
   <div id="cartItems"></div>
-  <h3>Total: £<span id="total">0</span></h3>
+  <h3>Total: £<span id="total">0.00</span></h3>
 
   <div id="checkout">
     <h3>Checkout (Mock Stripe)</h3>
@@ -220,8 +220,8 @@ let isAdmin = false;
 
 let products = [
   {name:"rocket cultivated", price:2, image:"https://cdn.diygarden.co.uk/wp-content/uploads/2021/07/shutterstock_760063117.jpg"},
-  {name:"red lettuce salad bowl", price:"2.50", image:"https://bentleyseeds.com/cdn/shop/files/shutterstock_22360084-red-salad-bowl-lettuce.jpg?v=1747665051&width=2000"},
-  {name:"carrot nantes 2", price:"3.50", image:"https://www.gardenersdream.co.uk/cdn/shop/files/00-GardenersDream-Seeds-Carrot-Early-Nantes-2.jpg?v=1761916647"}
+  {name:"red lettuce salad bowl", price:2.50, image:"https://bentleyseeds.com/cdn/shop/files/shutterstock_22360084-red-salad-bowl-lettuce.jpg?v=1747665051&width=2000"},
+  {name:"carrot nantes 2", price:3.50, image:"https://www.gardenersdream.co.uk/cdn/shop/files/00-GardenersDream-Seeds-Carrot-Early-Nantes-2.jpg?v=1761916647"}
 ];
 
 let cart = [];
@@ -230,30 +230,54 @@ function renderProducts(){
   let list = document.getElementById('productList');
   list.innerHTML='';
   products.forEach((p,i)=>{
-    list.innerHTML += `<div class="card"><img src="${p.image}"/><h3>${p.name}</h3><p>£${p.price}</p><button onclick="addItem(${i})">Add to Cart</button></div>`;
+    list.innerHTML += `
+      <div class="card">
+        <img src="${p.image}"/>
+        <h3>${p.name}</h3>
+        <p>£${p.price}</p>
+        <button onclick="addItem(${i})">Add to Cart</button>
+      </div>`;
   });
 }
 
-function addItem(i){ cart.push(products[i]); updateCart(); }
-function removeItem(i){ cart.splice(i,1); updateCart(); }
+function addItem(i){
+  cart.push(products[i]);
+  updateCart();
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
 
 function updateCart(){
-  let div=document.getElementById('cartItems');
-  let total=0;
-  div.innerHTML='';
+  let div = document.getElementById('cartItems');
+  let total = 0;
+  div.innerHTML = '';
 
   cart.forEach((c,i)=>{
-    total+=c.price;
-    div.innerHTML+=`<div class='cart-item'>${c.name} £$ Val{c.price} <button class='remove' onclick='removeItem(${i})'>X</button></div>`;
+    total += parseFloat(c.price);
+    div.innerHTML += `
+      <div class='cart-item'>
+        ${c.name} £${c.price}
+        <button class='remove' onclick='removeItem(${i})'>X</button>
+      </div>`;
   });
 
-  document.getElementById('count').innerText=cart.length;
-  document.getElementById('total').innerText=total;
+  document.getElementById('count').innerText = cart.length;
+  document.getElementById('total').innerText = total.toFixed(2);
 }
 
-function toggleCart(){ document.getElementById('cartPanel').classList.toggle('open'); }
+function toggleCart(){
+  document.getElementById('cartPanel').classList.toggle('open');
+}
 
-function payNow(){ alert("Payment Successful (Mock Stripe)"); cart=[]; updateCart(); toggleCart(); }
+function payNow(){
+  alert("Payment Successful (Mock Stripe)");
+  cart = [];
+  updateCart();
+  toggleCart();
+}
 
 function login(){
   let u=document.getElementById('user').value;
@@ -264,7 +288,9 @@ function login(){
     document.getElementById('adminPanel').style.display='block';
     document.getElementById('loginPanel').style.display='none';
     alert('Logged in as admin');
-  } else alert('Wrong login');
+  } else {
+    alert('Wrong login');
+  }
 }
 
 function logout(){
@@ -285,9 +311,13 @@ function addProduct(){
   renderProducts();
 }
 
-function scrollToShop(){ document.getElementById('productList').scrollIntoView({behavior:'smooth'}); }
+function scrollToShop(){
+  document.getElementById('productList').scrollIntoView({behavior:'smooth'});
+}
 
-function toggleAdmin(){ document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'}); }
+function toggleAdmin(){
+  document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});
+}
 
 renderProducts();
 
