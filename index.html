@@ -218,6 +218,13 @@
       color: white;
     }
 
+    #searchBar {
+      margin-bottom: 15px;
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+
     .admin-row {
       display: flex;
       flex-wrap: wrap;
@@ -265,6 +272,9 @@
     <button class="category-tab" data-cat="Salad" onclick="setCategory('Salad', this)">Salad</button>
     <button class="category-tab" data-cat="Beans" onclick="setCategory('Beans', this)">Beans</button>
   </div>
+
+  <!-- Search Bar -->
+  <input id="searchBar" placeholder="Search plants..." oninput="onSearchChange()" />
 
   <div class="cards" id="productList"></div>
 
@@ -380,6 +390,7 @@ let products = [
 
 let cart = []; // {productId, qty}
 let currentCategory = 'All';
+let currentSearch = '';
 
 function saveCart() {
   localStorage.setItem('roots_cart', JSON.stringify(cart));
@@ -400,8 +411,11 @@ function renderProducts() {
   const list = document.getElementById('productList');
   list.innerHTML = '';
 
-  products.forEach((p) => {
+  const searchLower = currentSearch.trim().toLowerCase();
+
+  products.forEach((p, i) => {
     if (currentCategory !== 'All' && p.category !== currentCategory) return;
+    if (searchLower && !p.name.toLowerCase().includes(searchLower)) return;
 
     list.innerHTML += `
       <div class="card">
@@ -498,3 +512,120 @@ function login() {
 }
 
 function logout() {
+  isAdmin = false;
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('loginPanel').style.display = 'block';
+}
+
+function addProduct() {
+  if (!isAdmin) return;
+
+  const name = document.getElementById('name').value.trim();
+  const priceValue = parseFloat(document.getElementById('price').value);
+  const image = document.getElementById('image').value.trim();
+  const category = document.getElementById('category').value;
+
+  if (!name || isNaN(priceValue) || !image) {
+    alert('Please fill in name, valid price, and image URL.');
+    return;
+  }
+
+  const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+
+  products.push({
+    id: newId,
+    name,
+    price: parseFloat(priceValue.toFixed(2)),
+    image,
+    category
+  });
+
+  document.getElementById('name').value = '';
+  document.getElementById('price').value = '';
+  document.getElementById('image').value = '';
+
+  renderProducts();
+  populateEditSelect();
+}
+
+function populateEditSelect() {
+  const select = document.getElementById('editSelect');
+  select.innerHTML = '<option value="">-- Select --</option>';
+  products.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.name;
+    select.appendChild(opt);
+  });
+}
+
+function loadProductForEdit() {
+  const id = parseInt(document.getElementById('editSelect').value);
+  if (!id) return;
+  const p = products.find(prod => prod.id === id);
+  if (!p) return;
+
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editPrice').value = p.price.toFixed(2);
+  document.getElementById('editImage').value = p.image;
+  document.getElementById('editCategory').value = p.category;
+}
+
+function saveEditedProduct() {
+  const id = parseInt(document.getElementById('editSelect').value);
+  if (!id) {
+    alert('Select a product to edit.');
+    return;
+  }
+  const p = products.find(prod => prod.id === id);
+  if (!p) return;
+
+  const name = document.getElementById('editName').value.trim();
+  const priceValue = parseFloat(document.getElementById('editPrice').value);
+  const image = document.getElementById('editImage').value.trim();
+  const category = document.getElementById('editCategory').value;
+
+  if (!name || isNaN(priceValue) || !image) {
+    alert('Please fill in name, valid price, and image URL.');
+    return;
+  }
+
+  p.name = name;
+  p.price = parseFloat(priceValue.toFixed(2));
+  p.image = image;
+  p.category = category;
+
+  renderProducts();
+  populateEditSelect();
+  updateCart(); // in case names/prices changed for items in cart
+  alert('Product updated.');
+}
+
+function scrollToShop() {
+  document.getElementById('productList').scrollIntoView({behavior:'smooth'});
+}
+
+function toggleAdmin() {
+  document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});
+}
+
+function setCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
+
+function onSearchChange() {
+  currentSearch = document.getElementById('searchBar').value;
+  renderProducts();
+}
+
+// Initial load
+loadCart();
+renderProducts();
+updateCart();
+</script>
+
+</body>
+</html>
