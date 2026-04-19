@@ -62,7 +62,7 @@
 
     .container {
       padding: 20px;
-      max-width: 1000px;
+      max-width: 1100px;
       margin: auto;
     }
 
@@ -105,21 +105,58 @@
       position: fixed;
       right: -350px;
       top: 0;
-      width: 300px;
+      width: 320px;
       height: 100%;
       background: white;
       box-shadow: -2px 0 10px rgba(0,0,0,0.2);
       padding: 20px;
       transition: 0.3s;
       overflow-y: auto;
+      z-index: 1000;
     }
 
     #cartPanel.open { right: 0; }
 
     .cart-item {
       display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    .cart-top {
+      display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .cart-qty-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .qty-controls {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .qty-btn {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #3a7d44;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .qty-btn:hover {
+      background: #2f5f35;
     }
 
     .remove {
@@ -129,6 +166,7 @@
       padding: 3px 6px;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 12px;
     }
 
     #checkout {
@@ -137,10 +175,11 @@
       padding-top: 10px;
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 8px;
       margin: 5px 0;
+      box-sizing: border-box;
     }
 
     .payBtn {
@@ -156,6 +195,50 @@
     }
 
     #adminPanel { display:none; }
+
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .category-tab {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #3a7d44;
+      background: white;
+      color: #3a7d44;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .category-tab.active {
+      background: #3a7d44;
+      color: white;
+    }
+
+    #searchBar {
+      margin-bottom: 15px;
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .admin-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .admin-row > div {
+      flex: 1 1 200px;
+    }
+
+    .label {
+      font-size: 13px;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -180,6 +263,19 @@
 <div class="container">
 
   <h2>Shop Plants</h2>
+
+  <!-- Category Tabs -->
+  <div class="category-tabs">
+    <button class="category-tab active" data-cat="All" onclick="setCategory('All', this)">All</button>
+    <button class="category-tab" data-cat="Herbs" onclick="setCategory('Herbs', this)">Herbs</button>
+    <button class="category-tab" data-cat="Roots" onclick="setCategory('Roots', this)">Roots</button>
+    <button class="category-tab" data-cat="Salad" onclick="setCategory('Salad', this)">Salad</button>
+    <button class="category-tab" data-cat="Beans" onclick="setCategory('Beans', this)">Beans</button>
+  </div>
+
+  <!-- Search Bar -->
+  <input id="searchBar" placeholder="Search plants..." oninput="onSearchChange()" />
+
   <div class="cards" id="productList"></div>
 
   <div id="loginPanel">
@@ -190,12 +286,68 @@
   </div>
 
   <div id="adminPanel">
-    <h2>Admin Panel - Add Plants</h2>
-    <input id="name" placeholder="Plant Name" />
-    <input id="price" placeholder="Price" />
-    <input id="image" placeholder="Image URL" />
+    <h2>Admin Panel - Manage Plants</h2>
+
+    <h3>Add New Plant</h3>
+    <div class="admin-row">
+      <div>
+        <div class="label">Name</div>
+        <input id="name" placeholder="Plant Name" />
+      </div>
+      <div>
+        <div class="label">Price</div>
+        <input id="price" placeholder="Price" />
+      </div>
+      <div>
+        <div class="label">Image URL</div>
+        <input id="image" placeholder="Image URL" />
+      </div>
+      <div>
+        <div class="label">Category</div>
+        <select id="category">
+          <option value="Herbs">Herbs</option>
+          <option value="Roots">Roots</option>
+          <option value="Salad">Salad</option>
+          <option value="Beans">Beans</option>
+        </select>
+      </div>
+    </div>
     <button onclick="addProduct()">Add Product</button>
-    <button onclick="logout()" style="background:red">Logout</button>
+
+    <hr style="margin:20px 0;">
+
+    <h3>Edit Existing Plant</h3>
+    <div class="admin-row">
+      <div>
+        <div class="label">Select Product</div>
+        <select id="editSelect" onchange="loadProductForEdit()">
+          <option value="">-- Select --</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Name</div>
+        <input id="editName" placeholder="Plant Name" />
+      </div>
+      <div>
+        <div class="label">Price</div>
+        <input id="editPrice" placeholder="Price" />
+      </div>
+      <div>
+        <div class="label">Image URL</div>
+        <input id="editImage" placeholder="Image URL" />
+      </div>
+      <div>
+        <div class="label">Category</div>
+        <select id="editCategory">
+          <option value="Herbs">Herbs</option>
+          <option value="Roots">Roots</option>
+          <option value="Salad">Salad</option>
+          <option value="Beans">Beans</option>
+        </select>
+      </div>
+    </div>
+    <button onclick="saveEditedProduct()">Save Changes</button>
+    <button onclick="logout()" style="background:red; margin-left:10px;">Logout</button>
   </div>
 
 </div>
@@ -215,127 +367,264 @@
 </div>
 
 <script>
-
 let isAdmin = false;
 
 let products = [
-  {name:"rocket (cultivated)", price:2.00, image:"https://images.unsplash.com/photo-1501004318641-b39e6451bec6"},
-  {name:"red lettuce (salad bowl)", price:2.50, image:"https://images.unsplash.com/photo-1524592094714-0f0654e20314"},
-  {name:"carrot (Nantes 2)", price:3.50, image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
-  {name:"tomato (Ailsa Craig)", price:2.00, image:"https://images.unsplash.com/photo-1567306226416-28f0efdc88ce"},
-  {name:"spinach (perpetual)", price:2.50, image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
-  {name:"tomato (Glyell)", price:2.50, image:"https://images.unsplash.com/photo-1592928303084-5f8e1a5daebc"},
-  {name:"chives", price:2.00, image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"},
-  {name:"sorrel (garden)", price:2.50, image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
-  {name:"cauliflower (all season)", price:2.50, image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
-  {name:"french bean (Ferrari)", price:2.00, image:"https://images.unsplash.com/photo-1592928303084-5f8e1a5daebc"},
-  {name:"broccoli (Calabrese)", price:2.50, image:"https://images.unsplash.com/photo-1582515073490-dc0c4f0b1f5b"},
-  {name:"beetroot (Detroit)", price:2.00, image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
-  {name:"swiss chard (mixed)", price:3.00, image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
-  {name:"carrot (Cosmic purple)", price:2.50, image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
-  {name:"curly kale (Nero Di Toscana)", price:3.00, image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
-  {name:"parsley", price:3.00, image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"}
+  {id:1, name:"rocket (cultivated)", price:2.00, category:"Salad", image:"https://images.unsplash.com/photo-1501004318641-b39e6451bec6"},
+  {id:2, name:"red lettuce (salad bowl)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1524592094714-0f0654e20314"},
+  {id:3, name:"carrot (Nantes 2)", price:3.50, category:"Roots", image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
+  {id:4, name:"tomato (Ailsa Craig)", price:2.00, category:"Salad", image:"https://images.unsplash.com/photo-1567306226416-28f0efdc88ce"},
+  {id:5, name:"spinach (perpetual)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
+  {id:6, name:"tomato (Glyell)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1592928303084-5f8e1a5daebc"},
+  {id:7, name:"chives", price:2.00, category:"Herbs", image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"},
+  {id:8, name:"sorrel (garden)", price:2.50, category:"Herbs", image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
+  {id:9, name:"cauliflower (all season)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
+  {id:10, name:"french bean (Ferrari)", price:2.00, category:"Beans", image:"https://images.unsplash.com/photo-1592928303084-5f8e1a5daebc"},
+  {id:11, name:"broccoli (Calabrese)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1582515073490-dc0c4f0b1f5b"},
+  {id:12, name:"beetroot (Detroit)", price:2.00, category:"Roots", image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
+  {id:13, name:"swiss chard (mixed)", price:3.00, category:"Salad", image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
+  {id:14, name:"carrot (Cosmic purple)", price:2.50, category:"Roots", image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
+  {id:15, name:"curly kale (Nero Di Toscana)", price:3.00, category:"Salad", image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
+  {id:16, name:"parsley", price:3.00, category:"Herbs", image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"}
 ];
 
-let cart = [];
+let cart = []; // {productId, qty}
+let currentCategory = 'All';
+let currentSearch = '';
 
-function renderProducts(){
-  let list = document.getElementById('productList');
-  list.innerHTML='';
-  products.forEach((p,i)=>{
+function saveCart() {
+  localStorage.setItem('roots_cart', JSON.stringify(cart));
+}
+
+function loadCart() {
+  const data = localStorage.getItem('roots_cart');
+  if (data) {
+    try {
+      cart = JSON.parse(data);
+    } catch(e) {
+      cart = [];
+    }
+  }
+}
+
+function renderProducts() {
+  const list = document.getElementById('productList');
+  list.innerHTML = '';
+
+  const searchLower = currentSearch.trim().toLowerCase();
+
+  products.forEach((p, i) => {
+    if (currentCategory !== 'All' && p.category !== currentCategory) return;
+    if (searchLower && !p.name.toLowerCase().includes(searchLower)) return;
+
     list.innerHTML += `
       <div class="card">
         <img src="${p.image}"/>
         <h3>${p.name}</h3>
+        <p><strong>${p.category}</strong></p>
         <p>£${p.price.toFixed(2)}</p>
-        <button onclick="addItem(${i})">Add to Cart</button>
+        <button onclick="addItem(${p.id})">Add to Cart</button>
       </div>`;
   });
 }
 
-function addItem(i){
-  cart.push(products[i]);
+function addItem(productId) {
+  const existing = cart.find(item => item.productId === productId);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({productId, qty:1});
+  }
   updateCart();
 }
 
-function removeItem(i){
-  cart.splice(i,1);
+function removeItem(index) {
+  cart.splice(index, 1);
   updateCart();
 }
 
-function updateCart(){
-  let div = document.getElementById('cartItems');
+function changeQty(index, delta) {
+  cart[index].qty += delta;
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+  updateCart();
+}
+
+function updateCart() {
+  const div = document.getElementById('cartItems');
   let total = 0;
   div.innerHTML = '';
 
-  cart.forEach((c,i)=>{
-    total += parseFloat(c.price);
+  cart.forEach((c, i) => {
+    const product = products.find(p => p.id === c.productId);
+    if (!product) return;
+    const lineTotal = product.price * c.qty;
+    total += lineTotal;
+
     div.innerHTML += `
-      <div class='cart-item'>
-        ${c.name} £${c.price.toFixed(2)}
-        <button class='remove' onclick='removeItem(${i})'>X</button>
+      <div class="cart-item">
+        <div class="cart-top">
+          <span>${product.name}</span>
+          <span>£${lineTotal.toFixed(2)}</span>
+        </div>
+        <div class="cart-qty-row">
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty(${i}, -1)">-</button>
+            <span>Qty: ${c.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+          </div>
+          <button class="remove" onclick="removeItem(${i})">Remove</button>
+        </div>
       </div>`;
   });
 
-  document.getElementById('count').innerText = cart.length;
+  document.getElementById('count').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
   document.getElementById('total').innerText = total.toFixed(2);
+
+  saveCart();
 }
 
-function toggleCart(){
+function toggleCart() {
   document.getElementById('cartPanel').classList.toggle('open');
 }
 
-function payNow(){
+function payNow() {
   alert("Payment Successful (Mock Stripe)");
   cart = [];
   updateCart();
   toggleCart();
 }
 
-function login(){
-  let u=document.getElementById('user').value;
-  let p=document.getElementById('pass').value;
+function login() {
+  const u = document.getElementById('user').value;
+  const p = document.getElementById('pass').value;
 
-  if(u==='admin' && p==='1234'){
-    isAdmin=true;
-    document.getElementById('adminPanel').style.display='block';
-    document.getElementById('loginPanel').style.display='none';
+  if (u === 'admin' && p === '1234') {
+    isAdmin = true;
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('loginPanel').style.display = 'none';
+    populateEditSelect();
     alert('Logged in as admin');
   } else {
     alert('Wrong login');
   }
 }
 
-function logout(){
-  isAdmin=false;
-  document.getElementById('adminPanel').style.display='none';
-  document.getElementById('loginPanel').style.display='block';
+function logout() {
+  isAdmin = false;
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('loginPanel').style.display = 'block';
 }
 
-function addProduct(){
-  if(!isAdmin) return;
+function addProduct() {
+  if (!isAdmin) return;
 
-  let priceValue = parseFloat(document.getElementById('price').value);
+  const name = document.getElementById('name').value.trim();
+  const priceValue = parseFloat(document.getElementById('price').value);
+  const image = document.getElementById('image').value.trim();
+  const category = document.getElementById('category').value;
+
+  if (!name || isNaN(priceValue) || !image) {
+    alert('Please fill in name, valid price, and image URL.');
+    return;
+  }
+
+  const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
 
   products.push({
-    name:document.getElementById('name').value,
-    price:parseFloat(priceValue.toFixed(2)),
-    image:document.getElementById('image').value
+    id: newId,
+    name,
+    price: parseFloat(priceValue.toFixed(2)),
+    image,
+    category
   });
 
+  document.getElementById('name').value = '';
+  document.getElementById('price').value = '';
+  document.getElementById('image').value = '';
+
   renderProducts();
+  populateEditSelect();
 }
 
-function scrollToShop(){
+function populateEditSelect() {
+  const select = document.getElementById('editSelect');
+  select.innerHTML = '<option value="">-- Select --</option>';
+  products.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.name;
+    select.appendChild(opt);
+  });
+}
+
+function loadProductForEdit() {
+  const id = parseInt(document.getElementById('editSelect').value);
+  if (!id) return;
+  const p = products.find(prod => prod.id === id);
+  if (!p) return;
+
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editPrice').value = p.price.toFixed(2);
+  document.getElementById('editImage').value = p.image;
+  document.getElementById('editCategory').value = p.category;
+}
+
+function saveEditedProduct() {
+  const id = parseInt(document.getElementById('editSelect').value);
+  if (!id) {
+    alert('Select a product to edit.');
+    return;
+  }
+  const p = products.find(prod => prod.id === id);
+  if (!p) return;
+
+  const name = document.getElementById('editName').value.trim();
+  const priceValue = parseFloat(document.getElementById('editPrice').value);
+  const image = document.getElementById('editImage').value.trim();
+  const category = document.getElementById('editCategory').value;
+
+  if (!name || isNaN(priceValue) || !image) {
+    alert('Please fill in name, valid price, and image URL.');
+    return;
+  }
+
+  p.name = name;
+  p.price = parseFloat(priceValue.toFixed(2));
+  p.image = image;
+  p.category = category;
+
+  renderProducts();
+  populateEditSelect();
+  updateCart(); // in case names/prices changed for items in cart
+  alert('Product updated.');
+}
+
+function scrollToShop() {
   document.getElementById('productList').scrollIntoView({behavior:'smooth'});
 }
 
-function toggleAdmin(){
+function toggleAdmin() {
   document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});
 }
 
-renderProducts();
+function setCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
 
+function onSearchChange() {
+  currentSearch = document.getElementById('searchBar').value;
+  renderProducts();
+}
+
+// Initial load
+loadCart();
+renderProducts();
+updateCart();
 </script>
 
 </body>
