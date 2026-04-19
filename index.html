@@ -244,7 +244,7 @@ function updateCart(){
 
   cart.forEach((c,i)=>{
     total+=c.price;
-    div.innerHTML+=`<div class='cart-item'>${c.name} £${c.price} <button class='remove' onclick='removeItem(${i})'>X</button></div>`;
+    div.innerHTML+=`<div class='cart-item'>${c.name} £$ Val{c.price} <button class='remove' onclick='removeItem(${i})'>X</button></div>`;
   });
 
   document.getElementById('count').innerText=cart.length;
