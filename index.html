@@ -3,281 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roots & Shoots Nursery</title>
+  <title>Roots &amp; Shoots Nursery</title>
   <style>
-    :root{
-      --green-1:#3a7d44;
-      --green-2:#2f5f35;
-      --bg:#f4f9f4;
-      --text:#2f4f2f;
-    }
-    body{
-      margin:0;
+    body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background-color:var(--bg);
-      color:var(--text);
+      background-color: #f4f9f4;
+      color: #2f4f2f;
     }
 
-    /* Header */
-    header{
-      background:var(--green-1);
-      color:#fff;
-      padding:14px 20px;
-      position:relative;
-    }
-    .header-inner{
-      max-width:1100px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      gap:16px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-    .brand img{
-      width:64px;
-      height:64px;
-      object-fit:contain;
-      background:#fff;
-      border-radius:12px;
-      padding:6px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.15);
-    }
-    .brand-text{
-      display:flex;
-      flex-direction:column;
-      line-height:1.15;
-      min-width:0;
-    }
-    .brand-text h1{
-      margin:0;
-      font-size:22px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .brand-text p{
-      margin:2px 0 0 0;
-      opacity:0.95;
-      font-size:14px;
+    header {
+      background: #3a7d44;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
     }
 
-    #cartBtn{
-      position:absolute;
-      right:20px;
-      top:18px;
-      background:#fff;
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:8px;
-      cursor:pointer;
-      user-select:none;
+    #cartBtn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: white;
+      color: #2f4f2f;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    /* Nav */
-    nav{
-      display:flex;
-      justify-content:center;
-      background:var(--green-2);
-      flex-wrap:wrap;
-    }
-    nav a{
-      color:#fff;
-      padding:14px 20px;
-      text-decoration:none;
-      cursor:pointer;
-    }
-    nav a:hover{ background:#4caf50; }
-
-    /* Hero with LOGO at the front */
-    .hero{
-      background: var(--bg) url('logo.png') center/contain no-repeat;
-      height: 320px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      position:relative;
-    }
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(to bottom, rgba(244,249,244,0.35), rgba(244,249,244,0.95));
-      pointer-events:none;
-    }
-    .hero-content{
-      position:relative;
-      z-index:1;
-      padding: 18px 20px;
-    }
-    .hero-content h2{
-      margin:0;
-      color:var(--text);
-      text-shadow:none;
+    nav {
+      display: flex;
+      justify-content: centre;
+      background: #2f5f35;
+      flex-wrap: wrap;
     }
 
-    /* Main */
-    .container{
-      padding:20px;
-      max-width:1100px;
-      margin:auto;
+    nav a {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      cursor: pointer;
     }
-    .cards{
-      display:grid;
+
+    nav a:hover {
+      background: #4caf50;
+    }
+
+    .hero {
+      background: url('https://veggiesyard.com/wp-content/uploads/2025/03/what-does-a-potato-plant-look-like-1024x595.jpg') centre/cover;
+      height: 300px;
+      display: flex;
+      align-items: centre;
+      justify-content: centre;
+      color: white;
+      text-shadow: 2px 2px 5px black;
+      text-align: centre;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .cards {
+      display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap:20px;
+      gap: 20px;
     }
-    .card{
-      background:#fff;
-      padding:15px;
-      border-radius:10px;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1);
-      text-align:center;
-    }
-    .card img{
-      width:100%;
-      height:150px;
-      object-fit:cover;
-      border-radius:10px;
-    }
-    button{
-      background:var(--green-1);
-      color:#fff;
-      border:none;
-      padding:8px;
-      cursor:pointer;
-      border-radius:5px;
-      margin-top:10px;
-    }
-    button:hover{ background:var(--green-2); }
 
-    /* Cart */
-    #cartPanel{
-      position:fixed;
-      right:-350px;
-      top:0;
-      width:320px;
-      height:100%;
-      background:#fff;
-      box-shadow:-2px 0 10px rgba(0,0,0,0.2);
-      padding:20px;
-      transition:0.3s;
-      overflow-y:auto;
-      z-index:1000;
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: centre;
     }
-    #cartPanel.open{ right:0; }
-    .cart-item{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      margin-bottom:12px;
-      border-bottom:1px solid #eee;
-      padding-bottom:8px;
-    }
-    .cart-top{
-      display:flex;
-      justify-content:space-between;
-      font-weight:bold;
-    }
-    .cart-qty-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:14px;
-    }
-    .qty-controls{ display:flex; gap:5px; align-items:center; }
-    .qty-btn{
-      padding:2px 6px;
-      border-radius:4px;
-      background:var(--green-1);
-      color:#fff;
-      border:none;
-      cursor:pointer;
-      font-size:14px;
-    }
-    .qty-btn:hover{ background:var(--green-2); }
-    .remove{
-      background:red;
-      color:#fff;
-      border:none;
-      padding:3px 6px;
-      border-radius:4px;
-      cursor:pointer;
-      font-size:12px;
-    }
-    #checkout{
-      margin-top:20px;
-      border-top:1px solid #ccc;
-      padding-top:10px;
-    }
-    input, select{
-      width:100%;
-      padding:8px;
-      margin:5px 0;
-      box-sizing:border-box;
-    }
-    .payBtn{ background:#0070ba; }
 
-    #adminPanel, #loginPanel{
-      background:#fff;
-      padding:20px;
-      margin-top:20px;
-      border-radius:10px;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
     }
-    #adminPanel{ display:none; }
 
-    .category-tabs{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:15px;
+    button {
+      background: #3a7d44;
+      color: white;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
     }
-    .category-tab{
-      padding:6px 12px;
-      border-radius:20px;
-      border:1px solid var(--green-1);
-      background:#fff;
-      color:var(--green-1);
-      cursor:pointer;
-      font-size:14px;
-    }
-    .category-tab.active{ background:var(--green-1); color:#fff; }
 
-    #searchBar{
-      margin-bottom:15px;
-      padding:8px;
-      width:100%;
-      max-width:400px;
+    button:hover {
+      background: #2f5f35;
     }
-    .admin-row{ display:flex; flex-wrap:wrap; gap:10px; }
-    .admin-row > div{ flex:1 1 200px; }
-    .label{ font-size:13px; margin-top:5px; }
 
-    @media (max-width:520px){
-      .brand img{ width:54px; height:54px; }
-      #cartBtn{ top:14px; right:14px; }
-      .hero{ height:260px; }
+    #cartPanel {
+      position: fixed;
+      right: -350px;
+      top: 0;
+      width: 320px;
+      height: 100%;
+      background: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      transition: 0.3s;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    #cartPanel.open { right: 0; }
+
+    .cart-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    .cart-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .cart-qty-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: centre;
+      font-size: 14px;
+    }
+
+    .qty-controls {
+      display: flex;
+      gap: 5px;
+      align-items: centre;
+    }
+
+    .qty-btn {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #3a7d44;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .qty-btn:hover {
+      background: #2f5f35;
+    }
+
+    .remove {
+      background: red;
+      color: white;
+      border: none;
+      padding: 3px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #checkout {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+
+    .payBtn {
+      background: #0070ba;
+    }
+
+    #adminPanel, #loginPanel {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    #adminPanel { display:none; }
+
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .category-tab {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #3a7d44;
+      background: white;
+      color: #3a7d44;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .category-tab.active {
+      background: #3a7d44;
+      color: white;
+    }
+
+    #searchBar {
+      margin-bottom: 15px;
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .admin-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .admin-row > div {
+      flex: 1 1 200px;
+    }
+
+    .label {
+      font-size: 13px;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="header-inner">
-    <div class="brand">
-      <img src="logo.png" alt="Roots & Shoots Nursery logo" />
-      <div class="brand-text">
-        <h1>Roots & Shoots Nursery</h1>
-        <p>Growing a greener tomorrow</p>
-      </div>
-    </div>
-  </div>
+  <h1>Roots &amp; Shoots Nursery</h1>
+  <p>Growing a greener tomorrow</p>
   <div id="cartBtn" onclick="toggleCart()">Cart (<span id="count">0</span>)</div>
 </header>
 
@@ -287,12 +255,13 @@
 </nav>
 
 <section class="hero">
-  <div class="hero-content">
+  <div>
     <h2>Buy Healthy Plants Online</h2>
   </div>
 </section>
 
 <div class="container">
+
   <h2>Shop Plants</h2>
 
   <!-- Category Tabs -->
@@ -345,7 +314,7 @@
     </div>
     <button onclick="addProduct()">Add Product</button>
 
-    <hr style="margin:20px 0;" />
+    <hr style="margin:20px 0;">
 
     <h3>Edit Existing Plant</h3>
     <div class="admin-row">
@@ -380,6 +349,7 @@
     <button onclick="saveEditedProduct()">Save Changes</button>
     <button onclick="logout()" style="background:red; margin-left:10px;">Logout</button>
   </div>
+
 </div>
 
 <div id="cartPanel">
@@ -398,6 +368,7 @@
 
 <script>
   let isAdmin = false;
+
   let products = [
     {id:1, name:"rocket (cultivated)", price:2.00, category:"Salad", image:"https://premierseedsdirect.com/wp-content/uploads/2017/12/Rocket-Cultivated-2-021225-iStock-SQ-PS-1024x1024.jpg"},
     {id:2, name:"red lettuce (salad bowl)", price:2.50, category:"Salad", image:"https://www.harrisseeds.com/cdn/shop/files/01527_900x.jpg?v=1736905903"},
@@ -411,4 +382,256 @@
     {id:10, name:"french bean (Ferrari)", price:2.00, category:"Beans", image:"https://images.unsplash.com/photo-1592928303084-5f8e1a5daebc"},
     {id:11, name:"broccoli (Calabrese)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1582515073490-dc0c4f0b1f5b"},
     {id:12, name:"beetroot (Detroit)", price:2.00, category:"Roots", image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
-    {id:13, name:"sw
+    {id:13, name:"swiss chard (mixed)", price:3.00, category:"Salad", image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
+    {id:14, name:"carrot (Cosmic purple)", price:2.50, category:"Roots", image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
+    {id:15, name:"curly kale (Nero Di Toscana)", price:3.00, category:"Salad", image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
+    {id:16, name:"parsley", price:3.00, category:"Herbs", image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"}
+  ];
+
+  let cart = []; // {productId, qty}
+  let currentCategory = 'All';
+  let currentSearch = '';
+
+  function saveCart() {
+    localStorage.setItem('roots_cart', JSON.stringify(cart));
+  }
+
+  function loadCart() {
+    const data = localStorage.getItem('roots_cart');
+    if (data) {
+      try {
+        cart = JSON.parse(data);
+      } catch(e) {
+        cart = [];
+      }
+    }
+  }
+
+  function renderProducts() {
+    const list = document.getElementById('productList');
+    list.innerHTML = '';
+
+    const searchLower = currentSearch.trim().toLowerCase();
+
+    products.forEach((p) => {
+      if (currentCategory !== 'All' && p.category !== currentCategory) return;
+      if (searchLower && !p.name.toLowerCase().includes(searchLower)) return;
+
+      list.innerHTML += `
+        <div class="card">
+          <img src="${p.image}" />
+          <h3>${p.name}</h3>
+          <p><strong>${p.category}</strong></p>
+          <p>£${p.price.toFixed(2)}</p>
+          <button onclick="addItem(${p.id})">Add to Cart</button>
+        </div>`;
+    });
+  }
+
+  function addItem(productId) {
+    const existing = cart.find(item => item.productId === productId);
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({productId, qty:1});
+    }
+    updateCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function changeQty(index, delta) {
+    cart[index].qty += delta;
+    if (cart[index].qty <= 0) {
+      cart.splice(index, 1);
+    }
+    updateCart();
+  }
+
+  function updateCart() {
+    const div = document.getElementById('cartItems');
+    let total = 0;
+    div.innerHTML = '';
+
+    cart.forEach((c, i) => {
+      const product = products.find(p => p.id === c.productId);
+      if (!product) return;
+
+      const lineTotal = product.price * c.qty;
+      total += lineTotal;
+
+      div.innerHTML += `
+        <div class="cart-item">
+          <div class="cart-top">
+            <span>${product.name}</span>
+            <span>£${lineTotal.toFixed(2)}</span>
+          </div>
+          <div class="cart-qty-row">
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty(${i}, -1)">-</button>
+              <span>Qty: ${c.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+            </div>
+            <button class="remove" onclick="removeItem(${i})">Remove</button>
+          </div>
+        </div>`;
+    });
+
+    document.getElementById('count').innerText =
+      cart.reduce((sum, item) => sum + item.qty, 0);
+
+    document.getElementById('total').innerText = total.toFixed(2);
+
+    saveCart();
+  }
+
+  function toggleCart() {
+    document.getElementById('cartPanel').classList.toggle('open');
+  }
+
+  function payNow() {
+    alert("Payment Successful (Mock Stripe)");
+    cart = [];
+    updateCart();
+    toggleCart();
+  }
+
+  // UPDATED ADMIN CREDENTIALS HERE:
+  function login() {
+    const u = document.getElementById('user').value;
+    const p = document.getElementById('pass').value;
+
+    if (u === 'Passwordadmin' && p === 'Adminlogin') {
+      isAdmin = true;
+      document.getElementById('adminPanel').style.display = 'block';
+      document.getElementById('loginPanel').style.display = 'none';
+      populateEditSelect();
+      alert('Logged in as admin');
+    } else {
+      alert('Wrong login');
+    }
+  }
+
+  function logout() {
+    isAdmin = false;
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('loginPanel').style.display = 'block';
+  }
+
+  function addProduct() {
+    if (!isAdmin) return;
+
+    const name = document.getElementById('name').value.trim();
+    const priceValue = parseFloat(document.getElementById('price').value);
+    const image = document.getElementById('image').value.trim();
+    const category = document.getElementById('category').value;
+
+    if (!name || isNaN(priceValue) || !image) {
+      alert('Please fill in name, valid price, and image URL.');
+      return;
+    }
+
+    const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+
+    products.push({
+      id: newId,
+      name,
+      price: parseFloat(priceValue.toFixed(2)),
+      image,
+      category
+    });
+
+    document.getElementById('name').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('image').value = '';
+
+    renderProducts();
+    populateEditSelect();
+  }
+
+  function populateEditSelect() {
+    const select = document.getElementById('editSelect');
+    select.innerHTML = '<option value="">-- Select --</option>';
+    products.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.name;
+      select.appendChild(opt);
+    });
+  }
+
+  function loadProductForEdit() {
+    const id = parseInt(document.getElementById('editSelect').value);
+    if (!id) return;
+
+    const p = products.find(prod => prod.id === id);
+    if (!p) return;
+
+    document.getElementById('editName').value = p.name;
+    document.getElementById('editPrice').value = p.price.toFixed(2);
+    document.getElementById('editImage').value = p.image;
+    document.getElementById('editCategory').value = p.category;
+  }
+
+  function saveEditedProduct() {
+    const id = parseInt(document.getElementById('editSelect').value);
+    if (!id) {
+      alert('Select a product to edit.');
+      return;
+    }
+
+    const p = products.find(prod => prod.id === id);
+    if (!p) return;
+
+    const name = document.getElementById('editName').value.trim();
+    const priceValue = parseFloat(document.getElementById('editPrice').value);
+    const image = document.getElementById('editImage').value.trim();
+    const category = document.getElementById('editCategory').value;
+
+    if (!name || isNaN(priceValue) || !image) {
+      alert('Please fill in name, valid price, and image URL.');
+      return;
+    }
+
+    p.name = name;
+    p.price = parseFloat(priceValue.toFixed(2));
+    p.image = image;
+    p.category = category;
+
+    renderProducts();
+    populateEditSelect();
+    updateCart(); // in case names/prices changed for items in cart
+    alert('Product updated.');
+  }
+
+  function scrollToShop() {
+    document.getElementById('productList').scrollIntoView({behavior:'smooth'});
+  }
+
+  function toggleAdmin() {
+    document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});
+  }
+
+  function setCategory(cat, btn) {
+    currentCategory = cat;
+    document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts();
+  }
+
+  function onSearchChange() {
+    currentSearch = document.getElementById('searchBar').value;
+    renderProducts();
+  }
+
+  // Initial load
+  loadCart();
+  renderProducts();
+  updateCart();
+</script>
+
+</body>
+</html>
