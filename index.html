@@ -1,637 +1,590 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vegetable & vegetation plants.com</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vegetable • Vegetation • Plants</title>
+  <meta name="description" content="A fresh, modern plants & vegetables mini site." />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f9f4;
-      color: #2f4f2f;
+    :root{
+      --bg:#07130c;
+      --card:#0b1d12;
+      --card2:#0f2618;
+      --text:#e9f6ee;
+      --muted:#b9d8c4;
+      --brand:#4ade80; /* green */
+      --brand2:#22c55e;
+      --accent:#a3e635; /* lime */
+      --ring: rgba(74,222,128,.35);
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+      --max: 1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(163,230,53,.22), transparent 55%),
+        radial-gradient(900px 500px at 90% 10%, rgba(74,222,128,.18), transparent 50%),
+        linear-gradient(180deg, #041009, var(--bg));
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 80px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(7,19,12,.55);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .navInner{max-width:var(--max); margin:0 auto; padding:14px 18px; display:flex; align-items:center; gap:14px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:750; letter-spacing:.2px}
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.25), transparent 40%),
+                  linear-gradient(135deg, var(--accent), var(--brand2));
+      box-shadow: 0 10px 30px rgba(34,197,94,.25);
+    }
+    .spacer{flex:1}
+    .navLinks{display:flex; gap:14px; align-items:center}
+    .navLinks a{
+      text-decoration:none; font-weight:600; color:var(--muted);
+      padding:9px 10px; border-radius:12px;
+    }
+    .navLinks a:hover{background: rgba(255,255,255,.06); color:var(--text)}
+    .btn{
+      border:0; cursor:pointer; font-weight:700;
+      padding:10px 14px; border-radius:14px;
+      color:#05210f;
+      background: linear-gradient(135deg, var(--accent), var(--brand));
+      box-shadow: 0 18px 45px rgba(34,197,94,.22);
+    }
+    .btn:focus{outline:3px solid var(--ring); outline-offset:2px}
+    .ghost{
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      box-shadow:none;
+      border:1px solid rgba(255,255,255,.10);
     }
 
-    header {
-      background: #3a7d44;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      position: relative;
+    .hero{padding:46px 0 18px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .heroGrid{grid-template-columns: 1fr; }
+      .navLinks{display:none}
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      width:max-content;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--brand)}
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(2.1rem, 4vw, 3.25rem);
+      line-height:1.05;
+      letter-spacing:-.02em;
+    }
+    .lead{color:var(--muted); font-size: 1.05rem; line-height:1.55; max-width: 55ch}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .panel{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+    }
+    .stats{
+      padding:18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .stat{
+      border-radius: 18px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.08);
+      padding:14px;
+    }
+    .stat b{font-size:1.2rem}
+    .stat span{display:block; color:var(--muted); font-weight:600; margin-top:6px; font-size:.92rem}
+
+    section{margin-top:34px}
+    .sectionTitle{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:14px}
+    .sectionTitle h2{margin:0; font-size:1.35rem}
+    .sectionTitle p{margin:0; color:var(--muted)}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+    .card{
+      grid-column: span 4;
+      padding:16px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .card:hover{transform: translateY(-2px); border-color: rgba(74,222,128,.35)}
+    .icon{
+      width:44px; height:44px; border-radius:16px;
+      background: rgba(74,222,128,.16);
+      border:1px solid rgba(74,222,128,.28);
+      display:grid; place-items:center;
+      font-size: 20px;
+    }
+    .card h3{margin:12px 0 6px; font-size:1.08rem}
+    .card p{margin:0; color:var(--muted); line-height:1.55}
+    @media (max-width: 900px){ .card{grid-column: span 6} }
+    @media (max-width: 620px){ .card{grid-column: span 12} }
+
+    .toolbar{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      padding:12px;
+      border-radius: var(--radius);
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    input[type="search"], select{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 600;
+    }
+    input[type="search"]{min-width: 240px}
+    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      padding:9px 11px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      cursor:pointer;
+      font-weight: 700;
+    }
+    .chip[aria-pressed="true"]{
+      background: rgba(74,222,128,.16);
+      border-color: rgba(74,222,128,.35);
+      color: var(--text);
     }
 
-    #cartBtn {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      background: white;
-      color: #2f4f2f;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    nav {
-      display: flex;
-      justify-content: centre;
-      background: #2f5f35;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: white;
-      padding: 14px 20px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    nav a:hover {
-      background: #4caf50;
-    }
-
-    .hero {
-      background: url('https://premierseedsdirect.com/wp-content/uploads/2017/12/Rocket-Cultivated-2-021225-iStock-SQ-PS-1024x1024.jpg') centre/cover;
-      height: 300px;
-      display: flex;
-      align-items: centre;
-      justify-content: centre;
-      color: white;
-      text-shadow: 2px 2px 5px black;
-      text-align: centre;
-    }
-
-    .container {
-      padding: 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      text-align: centre;
-    }
-
-    .card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    button {
-      background: #3a7d44;
-      color: white;
-      border: none;
-      padding: 8px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background: #2f5f35;
-    }
-
-    #cartPanel {
-      position: fixed;
-      right: -350px;
-      top: 0;
-      width: 320px;
-      height: 100%;
-      background: white;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-      padding: 20px;
-      transition: 0.3s;
-      overflow-y: auto;
-      z-index: 1000;
-    }
-
-    #cartPanel.open { right: 0; }
-
-    .cart-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-
-    .cart-top {
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-    }
-
-    .cart-qty-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: centre;
-      font-size: 14px;
-    }
-
-    .qty-controls {
-      display: flex;
-      gap: 5px;
-      align-items: centre;
-    }
-
-    .qty-btn {
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: #3a7d44;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .qty-btn:hover {
-      background: #2f5f35;
-    }
-
-    .remove {
-      background: red;
-      color: white;
-      border: none;
-      padding: 3px 6px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    #checkout {
-      margin-top: 20px;
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0;
-      box-sizing: border-box;
-    }
-
-    .payBtn {
-      background: #0070ba;
-    }
-
-    #adminPanel, #loginPanel {
-      background: white;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    #adminPanel { display:none; }
-
-    .category-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-
-    .category-tab {
-      padding: 6px 12px;
+    .gallery{margin-top:12px}
+    .tile{
+      grid-column: span 3;
       border-radius: 20px;
-      border: 1px solid #3a7d44;
-      background: white;
-      color: #3a7d44;
-      cursor: pointer;
-      font-size: 14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      position: relative;
+      min-height: 150px;
     }
-
-    .category-tab.active {
-      background: #3a7d44;
-      color: white;
+    .tile .img{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(120px 90px at 20% 30%, rgba(163,230,53,.38), transparent 60%),
+        radial-gradient(140px 90px at 75% 30%, rgba(74,222,128,.28), transparent 65%),
+        linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      transform: scale(1.02);
     }
-
-    #searchBar {
-      margin-bottom: 15px;
-      padding: 8px;
-      width: 100%;
-      max-width: 400px;
+    .tile .label{
+      position:absolute; left:12px; right:12px; bottom:12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      background: rgba(7,19,12,.55);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding:10px 12px;
+      backdrop-filter: blur(10px);
     }
+    .tile b{font-size:.98rem}
+    .tile small{color:var(--muted); font-weight:700}
+    .tile button{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    @media (max-width: 900px){ .tile{grid-column: span 4} }
+    @media (max-width: 620px){ .tile{grid-column: span 12} }
 
-    .admin-row {
-      display: flex;
-      flex-wrap: wrap;
+    .footer{
+      margin-top: 38px;
+      padding: 20px 0 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size:.9rem;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      padding:6px 10px; border-radius: 12px;
+      color: var(--text);
+    }
+    .modalBackdrop{
+      position: fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 100;
+    }
+    .modal{
+      width:min(720px, 100%);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modalHead{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
       gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
     }
-
-    .admin-row > div {
-      flex: 1 1 200px;
-    }
-
-    .label {
-      font-size: 13px;
-      margin-top: 5px;
+    .modalHead b{font-size: 1.05rem}
+    .modalBody{padding: 16px}
+    .modalBody p{color: var(--muted); line-height:1.65; margin-top:8px}
+    .x{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border-radius: 12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:900;
     }
   </style>
 </head>
+
 <body>
-
-<header>
-  <h1>vegetable & vegetation plants.com</h1>
-  <p>Growing a greener tomorrow</p>
-  <div id="cartBtn" onclick="toggleCart()">Cart (<span id="count">0</span>)</div>
-</header>
-
-<nav>
-  <a onclick="scrollToShop()">Shop</a>
-  <a onclick="toggleAdmin()">Admin</a>
-</nav>
-
-<section class="hero">
-  <div>
-    <h2>Buy Healthy Plants Online</h2>
-  </div>
-</section>
-
-<div class="container">
-
-  <h2>Shop Plants</h2>
-
-  <!-- Category Tabs -->
-  <div class="category-tabs">
-    <button class="category-tab active" data-cat="All" onclick="setCategory('All', this)">All</button>
-    <button class="category-tab" data-cat="Herbs" onclick="setCategory('Herbs', this)">Herbs</button>
-    <button class="category-tab" data-cat="Roots" onclick="setCategory('Roots', this)">Roots</button>
-    <button class="category-tab" data-cat="Salad" onclick="setCategory('Salad', this)">Salad</button>
-    <button class="category-tab" data-cat="Beans" onclick="setCategory('Beans', this)">Beans</button>
-  </div>
-
-  <!-- Search Bar -->
-  <input id="searchBar" placeholder="Search plants..." oninput="onSearchChange()" />
-
-  <div class="cards" id="productList"></div>
-
-  <div id="loginPanel">
-    <h2>Admin Login</h2>
-    <input id="user" placeholder="Username" />
-    <input id="pass" type="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-  </div>
-
-  <div id="adminPanel">
-    <h2>Admin Panel - Manage Plants</h2>
-
-    <h3>Add New Plant</h3>
-    <div class="admin-row">
-      <div>
-        <div class="label">Name</div>
-        <input id="name" placeholder="Plant Name" />
+  <div class="nav">
+    <div class="navInner">
+      <div class="brand" aria-label="Site brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Vegetable • Vegetation • Plants</span>
       </div>
-      <div>
-        <div class="label">Price</div>
-        <input id="price" placeholder="Price" />
-      </div>
-      <div>
-        <div class="label">Image URL</div>
-        <input id="image" placeholder="Image URL" />
-      </div>
-      <div>
-        <div class="label">Category</div>
-        <select id="category">
-          <option value="Herbs">Herbs</option>
-          <option value="Roots">Roots</option>
-          <option value="Salad">Salad</option>
-          <option value="Beans">Beans</option>
-        </select>
-      </div>
+      <div class="spacer"></div>
+      <nav class="navLinks" aria-label="Primary navigation">
+        <a href="#learn">Learn</a>
+        <a href="#catalogue">Catalogue</a>
+        <a href="#gallery">Gallery</a>
+      </nav>
+      <button class="btn ghost" id="openGuide">Quick guide</button>
     </div>
-    <button onclick="addProduct()">Add Product</button>
-
-    <hr style="margin:20px 0;">
-
-    <h3>Edit Existing Plant</h3>
-    <div class="admin-row">
-      <div>
-        <div class="label">Select Product</div>
-        <select id="editSelect" onchange="loadProductForEdit()">
-          <option value="">-- Select --</option>
-        </select>
-      </div>
-      <div>
-        <div class="label">Name</div>
-        <input id="editName" placeholder="Plant Name" />
-      </div>
-      <div>
-        <div class="label">Price</div>
-        <input id="editPrice" placeholder="Price" />
-      </div>
-      <div>
-        <div class="label">Image URL</div>
-        <input id="editImage" placeholder="Image URL" />
-      </div>
-      <div>
-        <div class="label">Category</div>
-        <select id="editCategory">
-          <option value="Herbs">Herbs</option>
-          <option value="Roots">Roots</option>
-          <option value="Salad">Salad</option>
-          <option value="Beans">Beans</option>
-        </select>
-      </div>
-    </div>
-    <button onclick="saveEditedProduct()">Save Changes</button>
-    <button onclick="logout()" style="background:red; margin-left:10px;">Logout</button>
   </div>
 
-</div>
-
-<div id="cartPanel">
-  <h2>Your Cart</h2>
-  <div id="cartItems"></div>
-  <h3>Total: £<span id="total">0.00</span></h3>
-
-  <div id="checkout">
-    <h3>Checkout (Mock Stripe)</h3>
-    <input placeholder="Card Number" />
-    <input placeholder="Expiry" />
-    <input placeholder="CVC" />
-    <button class="payBtn" onclick="payNow()">Pay Now</button>
-  </div>
-</div>
-
-<script>
-  let isAdmin = false;
-
-  let products = [
-    {id:1, name:"rocket (cultivated)", price:2.00, category:"Salad", image:"https://premierseedsdirect.com/wp-content/uploads/2017/12/Rocket-Cultivated-2-021225-iStock-SQ-PS-1024x1024.jpg"},
-    {id:2, name:"red lettuce (salad bowl)", price:2.50, category:"Salad", image:"https://www.harrisseeds.com/cdn/shop/files/01527_900x.jpg?v=1736905903"},
-    {id:3, name:"carrot (Nantes 2)", price:3.50, category:"Roots", image:"https://gardenerspath.com/wp-content/uploads/2025/01/Carrots-Ready-to-Harvest-in-the-Garden-2.jpg"},
-    {id:4, name:"tomato (agura)", price:2.00, category:"Salad", image:"https://media.istockphoto.com/id/512694992/photo/young-tomato-plant-growing-tomato-in-garden.jpg?s=170667a&w=0&k=20&c=2uXN2qMYOR1ZIuG1lQYFQZyGTN4CTLzaPHSL16JCsXY="},
-    {id:5, name:"spinach (perpetual)", price:2.50, category:"Salad", image:"https://premierseedsdirect.com/wp-content/uploads/2017/02/41579623-2.jpg"},
-    {id:6, name:"tomato (idyll)", price:2.50, category:"Salad", image:"https://www.jungepflanzen.de/media/5d/2c/99/1701199480/solanum_lycopersicum_idyll_1.jpg?ts=1701199480"},
-    {id:7, name:"chives", price:2.00, category:"Herbs", image:"https://tse3.mm.bing.net/th/id/OIP.EAd4tdgoNtf83f9Pp4NOxAHaJi?pid=ImgDet&w=474&h=610&rs=1&o=7&rm=3&adlt=strict"},
-    {id:8, name:"sorrel (garden)", price:2.50, category:"Herbs", image:"https://www.epicgardening.com/wp-content/uploads/2023/02/sorrel-plant-1200x667.jpeg"},
-    {id:9, name:"cauliflower (all season)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
-    {id:10, name:"french bean (Ferrari)", price:2.00, category:"Beans", image:"https://images.unsplash.com/photo-1592928303084-5f8e1a5daebc"},
-    {id:11, name:"broccoli (Calabrese)", price:2.50, category:"Salad", image:"https://images.unsplash.com/photo-1582515073490-dc0c4f0b1f5b"},
-    {id:12, name:"beetroot (Detroit)", price:2.00, category:"Roots", image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
-    {id:13, name:"swiss chard (mixed)", price:3.00, category:"Salad", image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
-    {id:14, name:"carrot (Cosmic purple)", price:2.50, category:"Roots", image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
-    {id:15, name:"curly kale (Nero Di Toscana)", price:3.00, category:"Salad", image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
-    {id:16, name:"parsley", price:3.00, category:"Herbs", image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"}
-  ];
-
-  let cart = []; // {productId, qty}
-  let currentCategory = 'All';
-  let currentSearch = '';
-
-  function saveCart() {
-    localStorage.setItem('roots_cart', JSON.stringify(cart));
-  }
-
-  function loadCart() {
-    const data = localStorage.getItem('roots_cart');
-    if (data) {
-      try {
-        cart = JSON.parse(data);
-      } catch(e) {
-        cart = [];
-      }
-    }
-  }
-
-  function renderProducts() {
-    const list = document.getElementById('productList');
-    list.innerHTML = '';
-
-    const searchLower = currentSearch.trim().toLowerCase();
-
-    products.forEach((p) => {
-      if (currentCategory !== 'All' && p.category !== currentCategory) return;
-      if (searchLower && !p.name.toLowerCase().includes(searchLower)) return;
-
-      list.innerHTML += `
-        <div class="card">
-          <img src="${p.image}" />
-          <h3>${p.name}</h3>
-          <p><strong>${p.category}</strong></p>
-          <p>£${p.price.toFixed(2)}</p>
-          <button onclick="addItem(${p.id})">Add to Cart</button>
-        </div>`;
-    });
-  }
-
-  function addItem(productId) {
-    const existing = cart.find(item => item.productId === productId);
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      cart.push({productId, qty:1});
-    }
-    updateCart();
-  }
-
-  function removeItem(index) {
-    cart.splice(index, 1);
-    updateCart();
-  }
-
-  function changeQty(index, delta) {
-    cart[index].qty += delta;
-    if (cart[index].qty <= 0) {
-      cart.splice(index, 1);
-    }
-    updateCart();
-  }
-
-  function updateCart() {
-    const div = document.getElementById('cartItems');
-    let total = 0;
-    div.innerHTML = '';
-
-    cart.forEach((c, i) => {
-      const product = products.find(p => p.id === c.productId);
-      if (!product) return;
-
-      const lineTotal = product.price * c.qty;
-      total += lineTotal;
-
-      div.innerHTML += `
-        <div class="cart-item">
-          <div class="cart-top">
-            <span>${product.name}</span>
-            <span>£${lineTotal.toFixed(2)}</span>
+  <main class="wrap">
+    <header class="hero">
+      <div class="heroGrid">
+        <div>
+          <div class="badge"><span class="dot" aria-hidden="true"></span> Fresh, tidy, responsive rebuild template</div>
+          <h1>Plants you can grow.<br/>Veg you can eat.<br/>A site you can ship.</h1>
+          <p class="lead">
+            A modern single‑page layout for plant/vegetable content: searchable cards, filter chips, a simple gallery,
+            and a lightweight modal — perfect for GitHub Pages.
+          </p>
+          <div class="ctaRow">
+            <a class="btn" href="#catalogue" style="text-decoration:none; display:inline-block;">Browse catalogue</a>
+            <button class="btn ghost" id="scrollLearn">What’s inside?</button>
           </div>
-          <div class="cart-qty-row">
-            <div class="qty-controls">
-              <button class="qty-btn" onclick="changeQty(${i}, -1)">-</button>
-              <span>Qty: ${c.qty}</span>
-              <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+        </div>
+
+        <aside class="panel">
+          <div class="stats" aria-label="Key stats">
+            <div class="stat"><b id="statCount">12</b><span>items in demo catalogue</span></div>
+            <div class="stat"><b id="statTypes">3</b><span>types (veg / herb / plant)</span></div>
+            <div class="stat"><b class="kbd">⌘ / Ctrl + K</b><span>focus search</span></div>
+          </div>
+          <div style="padding:0 18px 18px">
+            <div class="toolbar" role="search" aria-label="Catalogue tools">
+              <input id="search" type="search" placeholder="Search: tomato, basil, sunflower…" aria-label="Search catalogue" />
+              <select id="type" aria-label="Filter by type">
+                <option value="all">All types</option>
+                <option value="veg">Vegetable</option>
+                <option value="herb">Herb</option>
+                <option value="plant">Plant</option>
+              </select>
+              <button class="btn ghost" id="clear">Clear</button>
             </div>
-            <button class="remove" onclick="removeItem(${i})">Remove</button>
+            <div class="chips" style="margin-top:10px" aria-label="Quick filters">
+              <button class="chip" data-tag="beginner" aria-pressed="false">Beginner</button>
+              <button class="chip" data-tag="container" aria-pressed="false">Container</button>
+              <button class="chip" data-tag="sunny" aria-pressed="false">Sunny</button>
+              <button class="chip" data-tag="shade" aria-pressed="false">Shade</button>
+            </div>
           </div>
-        </div>`;
+        </aside>
+      </div>
+    </header>
+
+    <section id="learn" aria-label="Learn section">
+      <div class="sectionTitle">
+        <h2>Learn</h2>
+        <p>Simple, readable sections that you can expand.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="icon" aria-hidden="true">🌱</div>
+          <h3>Start small</h3>
+          <p>Begin with a few reliable varieties, then scale your beds and containers as you learn what thrives.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">☀️</div>
+          <h3>Light & location</h3>
+          <p>Group sun‑lovers together, keep shade‑tolerant plants nearer walls, fences, and sheltered corners.</p>
+        </article>
+        <article class="card">
+          <div class="icon" aria-hidden="true">💧</div>
+          <h3>Water consistently</h3>
+          <p>Consistency beats volume — especially for pots. Mulch helps reduce swings in moisture and temperature.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="catalogue" aria-label="Catalogue section">
+      <div class="sectionTitle">
+        <h2>Catalogue</h2>
+        <p id="resultMeta">Showing all items.</p>
+      </div>
+
+      <div class="grid" id="cards"></div>
+    </section>
+
+    <section id="gallery" aria-label="Gallery section">
+      <div class="sectionTitle">
+        <h2>Gallery</h2>
+        <p>Gradient tiles (swap for photos later).</p>
+      </div>
+      <div class="grid gallery" id="galleryGrid"></div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span id="year"></span> Vegetable • Vegetation • Plants</div>
+      <div>Tip: Press <span class="kbd">⌘ / Ctrl + K</span> to jump to search.</div>
+    </footer>
+  </main>
+
+  <!-- Modal -->
+  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modalHead">
+        <b id="modalTitle">Quick guide</b>
+        <button class="x" id="closeModal" aria-label="Close">✕</button>
+      </div>
+      <div class="modalBody" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const catalogue = [
+      { id: 1, name: "Tomato", type: "veg", tags: ["beginner", "sunny"], note: "Warm‑season favourite. Stake or cage for support." },
+      { id: 2, name: "Courgette", type: "veg", tags: ["sunny"], note: "Big leaves, heavy producer. Give it space." },
+      { id: 3, name: "Lettuce", type: "veg", tags: ["beginner", "shade"], note: "Great for succession planting; partial shade helps in summer." },
+      { id: 4, name: "Carrot", type: "veg", tags: ["beginner"], note: "Loose soil = straighter roots. Keep evenly moist for germination." },
+      { id: 5, name: "Basil", type: "herb", tags: ["container", "sunny"], note: "Loves warmth. Pinch tips to encourage bushy growth." },
+      { id: 6, name: "Mint", type: "herb", tags: ["container", "shade"], note: "Best grown in a pot to stop it spreading." },
+      { id: 7, name: "Rosemary", type: "herb", tags: ["sunny"], note: "Hardy and aromatic. Prefers well‑drained soil." },
+      { id: 8, name: "Sunflower", type: "plant", tags: ["beginner", "sunny"], note: "Fast, cheerful, and tall. Great for pollinators." },
+      { id: 9, name: "Lavender", type: "plant", tags: ["sunny"], note: "Drought tolerant once established. Loves free‑draining soil." },
+      { id:10, name: "Strawberry", type: "plant", tags: ["container", "sunny"], note: "Ideal for hanging baskets and pots; protect fruits from slugs." },
+      { id:11, name: "Pea", type: "veg", tags: ["beginner"], note: "Climber — add supports early. Harvest often to keep it producing." },
+      { id:12, name: "Marigold", type: "plant", tags: ["beginner", "sunny"], note: "Companion favourite. Adds colour around beds and pots." },
+    ];
+
+    const gallery = [
+      { title: "Seedlings", subtitle: "First true leaves" },
+      { title: "Raised beds", subtitle: "Neat rows" },
+      { title: "Pollinators", subtitle: "Bee friendly" },
+      { title: "Herb pots", subtitle: "Kitchen ready" },
+      { title: "Summer harvest", subtitle: "Fresh picks" },
+      { title: "Compost", subtitle: "Soil power" },
+      { title: "Trellis", subtitle: "Grow vertical" },
+      { title: "Mulch", subtitle: "Keep moisture" }
+    ];
+
+    const els = {
+      search: document.getElementById("search"),
+      type: document.getElementById("type"),
+      clear: document.getElementById("clear"),
+      cards: document.getElementById("cards"),
+      meta: document.getElementById("resultMeta"),
+      chips: Array.from(document.querySelectorAll(".chip")),
+      statCount: document.getElementById("statCount"),
+      statTypes: document.getElementById("statTypes"),
+      year: document.getElementById("year"),
+      openGuide: document.getElementById("openGuide"),
+      scrollLearn: document.getElementById("scrollLearn"),
+      modalBackdrop: document.getElementById("modalBackdrop"),
+      closeModal: document.getElementById("closeModal"),
+      modalBody: document.getElementById("modalBody"),
+      galleryGrid: document.getElementById("galleryGrid"),
+    };
+
+    els.year.textContent = new Date().getFullYear();
+
+    const selectedTags = new Set();
+
+    function typeLabel(t){
+      return t === "veg" ? "Vegetable" : t === "herb" ? "Herb" : "Plant";
+    }
+
+    function renderCards(items){
+      els.cards.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "card";
+        const icon = item.type === "veg" ? "🥕" : item.type === "herb" ? "🌿" : "🪴";
+        card.innerHTML = `
+          <div class="icon" aria-hidden="true">${icon}</div>
+          <h3>${item.name}</h3>
+          <p>${item.note}</p>
+          <p style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <span style="padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); font-weight:800; color:var(--muted);">
+              ${typeLabel(item.type)}
+            </span>
+            ${item.tags.map(t => `
+              <span style="padding:6px 10px; border-radius:999px; background:rgba(74,222,128,.12); border:1px solid rgba(74,222,128,.22); font-weight:800;">
+                #${t}
+              </span>
+            `).join("")}
+          </p>
+        `;
+        els.cards.appendChild(card);
+      });
+
+      els.meta.textContent = items.length === catalogue.length
+        ? "Showing all items."
+        : `Showing ${items.length} result${items.length === 1 ? "" : "s"}.`;
+    }
+
+    function applyFilters(){
+      const q = els.search.value.trim().toLowerCase();
+      const t = els.type.value;
+
+      const filtered = catalogue.filter(item => {
+        const matchesQuery =
+          !q || item.name.toLowerCase().includes(q) || item.note.toLowerCase().includes(q) || item.tags.some(x => x.includes(q));
+        const matchesType = (t === "all") || (item.type === t);
+        const matchesTags = selectedTags.size === 0 || [...selectedTags].every(tag => item.tags.includes(tag));
+        return matchesQuery && matchesType && matchesTags;
+      });
+
+      renderCards(filtered);
+    }
+
+    els.search.addEventListener("input", applyFilters);
+    els.type.addEventListener("change", applyFilters);
+    els.clear.addEventListener("click", () => {
+      els.search.value = "";
+      els.type.value = "all";
+      selectedTags.clear();
+      els.chips.forEach(c => c.setAttribute("aria-pressed","false"));
+      applyFilters();
+      els.search.focus();
     });
 
-    document.getElementById('count').innerText =
-      cart.reduce((sum, item) => sum + item.qty, 0);
-
-    document.getElementById('total').innerText = total.toFixed(2);
-
-    saveCart();
-  }
-
-  function toggleCart() {
-    document.getElementById('cartPanel').classList.toggle('open');
-  }
-
-  function payNow() {
-    alert("Payment Successful (Mock Stripe)");
-    cart = [];
-    updateCart();
-    toggleCart();
-  }
-
-  // UPDATED ADMIN CREDENTIALS HERE:
-  function login() {
-    const u = document.getElementById('user').value;
-    const p = document.getElementById('pass').value;
-
-    if (u === 'Passwordadmin' && p === 'Adminlogin') {
-      isAdmin = true;
-      document.getElementById('adminPanel').style.display = 'block';
-      document.getElementById('loginPanel').style.display = 'none';
-      populateEditSelect();
-      alert('Logged in as admin');
-    } else {
-      alert('Wrong login');
-    }
-  }
-
-  function logout() {
-    isAdmin = false;
-    document.getElementById('adminPanel').style.display = 'none';
-    document.getElementById('loginPanel').style.display = 'block';
-  }
-
-  function addProduct() {
-    if (!isAdmin) return;
-
-    const name = document.getElementById('name').value.trim();
-    const priceValue = parseFloat(document.getElementById('price').value);
-    const image = document.getElementById('image').value.trim();
-    const category = document.getElementById('category').value;
-
-    if (!name || isNaN(priceValue) || !image) {
-      alert('Please fill in name, valid price, and image URL.');
-      return;
-    }
-
-    const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
-
-    products.push({
-      id: newId,
-      name,
-      price: parseFloat(priceValue.toFixed(2)),
-      image,
-      category
+    els.chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const tag = chip.dataset.tag;
+        const pressed = chip.getAttribute("aria-pressed") === "true";
+        chip.setAttribute("aria-pressed", String(!pressed));
+        if (pressed) selectedTags.delete(tag);
+        else selectedTags.add(tag);
+        applyFilters();
+      });
     });
 
-    document.getElementById('name').value = '';
-    document.getElementById('price').value = '';
-    document.getElementById('image').value = '';
-
-    renderProducts();
-    populateEditSelect();
-  }
-
-  function populateEditSelect() {
-    const select = document.getElementById('editSelect');
-    select.innerHTML = '<option value="">-- Select --</option>';
-    products.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.id;
-      opt.textContent = p.name;
-      select.appendChild(opt);
+    // Keyboard shortcut: Ctrl/Cmd + K focuses search
+    window.addEventListener("keydown", (e) => {
+      const isMac = navigator.platform.toUpperCase().includes("MAC");
+      if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        els.search.focus();
+      }
+      if (e.key === "Escape") closeModal();
     });
-  }
 
-  function loadProductForEdit() {
-    const id = parseInt(document.getElementById('editSelect').value);
-    if (!id) return;
-
-    const p = products.find(prod => prod.id === id);
-    if (!p) return;
-
-    document.getElementById('editName').value = p.name;
-    document.getElementById('editPrice').value = p.price.toFixed(2);
-    document.getElementById('editImage').value = p.image;
-    document.getElementById('editCategory').value = p.category;
-  }
-
-  function saveEditedProduct() {
-    const id = parseInt(document.getElementById('editSelect').value);
-    if (!id) {
-      alert('Select a product to edit.');
-      return;
+    // Modal
+    function openModal(){
+      els.modalBody.innerHTML = `
+        <p><b>What you can edit quickly:</b></p>
+        <ul style="color:var(--muted); line-height:1.8; margin-top:6px;">
+          <li><b>Catalogue items</b>: edit the <span class="kbd">catalogue</span> array in the script.</li>
+          <li><b>Colours</b>: tweak CSS variables in <span class="kbd">:root</span>.</li>
+          <li><b>Gallery</b>: replace gradient tiles with real images.</li>
+          <li><b>Sections</b>: duplicate cards to add more content blocks.</li>
+        </ul>
+        <p style="margin-top:10px;">
+          Want this as React/Next.js instead? I can convert this layout 1:1 into components.
+        </p>
+      `;
+      els.modalBackdrop.style.display = "flex";
+      els.closeModal.focus();
     }
-
-    const p = products.find(prod => prod.id === id);
-    if (!p) return;
-
-    const name = document.getElementById('editName').value.trim();
-    const priceValue = parseFloat(document.getElementById('editPrice').value);
-    const image = document.getElementById('editImage').value.trim();
-    const category = document.getElementById('editCategory').value;
-
-    if (!name || isNaN(priceValue) || !image) {
-      alert('Please fill in name, valid price, and image URL.');
-      return;
+    function closeModal(){
+      els.modalBackdrop.style.display = "none";
     }
+    els.openGuide.addEventListener("click", openModal);
+    els.closeModal.addEventListener("click", closeModal);
+    els.modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === els.modalBackdrop) closeModal();
+    });
 
-    p.name = name;
-    p.price = parseFloat(priceValue.toFixed(2));
-    p.image = image;
-    p.category = category;
+    els.scrollLearn.addEventListener("click", () => {
+      document.getElementById("learn").scrollIntoView({behavior:"smooth"});
+    });
 
-    renderProducts();
-    populateEditSelect();
-    updateCart(); // in case names/prices changed for items in cart
-    alert('Product updated.');
-  }
+    // Stats
+    els.statCount.textContent = String(catalogue.length);
+    els.statTypes.textContent = String(new Set(catalogue.map(x => x.type)).size);
 
-  function scrollToShop() {
-    document.getElementById('productList').scrollIntoView({behavior:'smooth'});
-  }
+    // Gallery render
+    gallery.forEach((g, i) => {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+      tile.innerHTML = `
+        <div class="img" aria-hidden="true"></div>
+        <div class="label">
+          <div>
+            <b>${g.title}</b><br/>
+            <small>${g.subtitle}</small>
+          </div>
+          <button type="button" aria-label="Open item ${i+1}" data-i="${i}">View</button>
+        </div>
+      `;
+      tile.querySelector("button").addEventListener("click", () => {
+        document.getElementById("modalTitle").textContent = g.title;
+        els.modalBody.innerHTML = `<p>${g.subtitle}</p><p style="color:var(--muted)">Replace this tile with an image and add details here.</p>`;
+        els.modalBackdrop.style.display = "flex";
+        els.closeModal.focus();
+      });
+      els.galleryGrid.appendChild(tile);
+    });
 
-  function toggleAdmin() {
-    document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});
-  }
-
-  function setCategory(cat, btn) {
-    currentCategory = cat;
-    document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderProducts();
-  }
-
-  function onSearchChange() {
-    currentSearch = document.getElementById('searchBar').value;
-    renderProducts();
-  }
-
-  // Initial load
-  loadCart();
-  renderProducts();
-  updateCart();
-</script>
-
+    // Initial render
+    applyFilters();
+  </script>
 </body>
 </html>
