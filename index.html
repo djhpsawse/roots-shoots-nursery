@@ -3,33 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vegetable, Vegetation & Plants</title>
-  <meta name="description" content="Vegetable, Vegetation & Plants — Growing a greener tomorrow. Demo shop with admin panel and persistent cart/products." />
+  <title>Vegetable, Vegetation &amp; Plants</title>
+  <meta name="description" content="Vegetable, Vegetation & Plants — Growing a greener tomorrow. Demo shop with admin panel, categories, persistent cart/products, and Stripe test Payment Link support." />
 
   <style>
     :root{
       --green-1:#3a7d44;
       --green-2:#2f5f35;
-      --green-3:#2f4f2f;
+      --green-3:#244024;
       --bg:#f4f9f4;
       --card:#ffffff;
       --muted:#486a48;
       --danger:#d62828;
       --blue:#0070ba;
-      --shadow: 0 2px 8px rgba(0,0,0,0.08);
-      --radius: 16px;
+      --shadow: 0 2px 10px rgba(0,0,0,0.10);
+      --radius: 18px;
+      --ring: 0 0 0 3px rgba(58,125,68,0.18);
     }
     *{ box-sizing:border-box; }
+    html{ -webkit-text-size-adjust:100%; }
     body{
       margin:0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       background: var(--bg);
       color: var(--green-3);
+      min-height:100vh;
+      min-height:100dvh;
+      padding:
+        env(safe-area-inset-top)
+        env(safe-area-inset-right)
+        env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
     }
+
     header{
       background: var(--green-1);
       color:#fff;
       padding:16px;
+      position:sticky;
+      top:0;
+      z-index:900;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     }
     .header-inner{
       max-width:1100px;
@@ -53,16 +67,20 @@
       background:#fff;
       color:var(--green-3);
       padding:10px 12px;
-      border-radius:12px;
+      border-radius:14px;
       cursor:pointer;
       user-select:none;
       font-weight:bold;
       text-decoration:none;
-      box-shadow:0 2px 6px rgba(0,0,0,0.15);
+      box-shadow:0 2px 8px rgba(0,0,0,0.18);
       border:none;
+      line-height:1;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .pill-link:hover, .pill-btn:hover{ background:#e8f2e8; }
-    .brand{ text-align:center; line-height:1.1; }
+    .pill-btn:focus-visible, .pill-link:focus-visible{ outline:none; box-shadow: 0 0 0 3px rgba(255,255,255,0.35), var(--ring); }
+    .brand{ text-align:center; line-height:1.12; }
     .brand h1{ margin:0; font-size:28px; }
     .brand p{ margin:6px 0 0; opacity:0.95; }
 
@@ -72,32 +90,38 @@
       background: var(--green-2);
       flex-wrap:wrap;
       gap:6px;
-      padding:6px;
+      padding:8px;
+      position:sticky;
+      top:72px; /* below header */
+      z-index:850;
     }
     nav button{
-      background:transparent;
+      background:rgba(255,255,255,0.08);
       border:none;
       color:#fff;
       padding:12px 16px;
       cursor:pointer;
-      border-radius:10px;
+      border-radius:12px;
       font-weight:bold;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
-    nav button:hover{ background:#4caf50; }
+    nav button:hover{ background:rgba(255,255,255,0.16); }
+    nav button.active{ background:#4caf50; }
 
     .hero{
       background: url('https://raw.githubusercontent.com/djhpsawse/vegetable-vegetation-plants/refs/heads/main/Designer.png') center/cover;
-      min-height:280px;
+      min-height:260px;
       display:flex;
       align-items:center;
       justify-content:center;
       color:white;
-      text-shadow: 2px 2px 5px black;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.75);
       text-align:center;
-      padding:20px;
+      padding:24px 16px;
     }
     .hero h2{ margin:0; font-size:34px; }
-    .hero p{ margin:10px 0 0; font-size:16px; }
+    .hero p{ margin:10px 0 0; font-size:16px; max-width: 70ch; }
 
     .container{
       padding:20px;
@@ -114,11 +138,44 @@
     .section-title h2{ margin:0; }
     .mini{ font-size:12px; color:var(--muted); margin:0; }
 
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      margin-top:14px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      flex: 1 1 260px;
+      min-width: 220px;
+    }
+    .label{
+      font-size:13px;
+      color:#355c35;
+      font-weight:bold;
+    }
+    input, select, textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid #cfe0cf;
+      border-radius:14px;
+      outline:none;
+      font-family:inherit;
+      background:#fff;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: var(--green-1);
+      box-shadow: var(--ring);
+    }
+
     .category-tabs{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin: 14px 0 14px;
+      margin: 14px 0 6px;
     }
     .category-tab{
       padding:8px 14px;
@@ -129,30 +186,19 @@
       cursor:pointer;
       font-size:14px;
       font-weight:bold;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .category-tab.active{
       background:var(--green-1);
       color:#fff;
     }
 
-    #searchBar{
-      margin: 0 0 15px;
-      padding:10px 12px;
-      width:100%;
-      max-width:460px;
-      border:1px solid #cfe0cf;
-      border-radius:12px;
-      outline:none;
-    }
-    #searchBar:focus{
-      border-color: var(--green-1);
-      box-shadow: 0 0 0 3px rgba(58,125,68,0.15);
-    }
-
     .cards{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap:18px;
+      margin-top: 12px;
     }
     .card{
       background:var(--card);
@@ -163,12 +209,13 @@
       display:flex;
       flex-direction:column;
       gap:10px;
+      overflow:hidden;
     }
     .card img{
       width:100%;
-      height:150px;
+      height:160px;
       object-fit:cover;
-      border-radius:14px;
+      border-radius:16px;
       background:#e9f3e9;
     }
     .card h3{ margin:0; font-size:16px; }
@@ -180,7 +227,7 @@
       font-size:14px;
       color:var(--muted);
     }
-    .price{ font-weight:bold; color:var(--green-3); }
+    .price{ font-weight:bold; color: var(--green-3); }
 
     .btn{
       background: var(--green-1);
@@ -188,25 +235,89 @@
       border:none;
       padding:10px 12px;
       cursor:pointer;
-      border-radius:12px;
+      border-radius:14px;
       font-weight:bold;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .btn:hover{ background: var(--green-2); }
+    .btn:focus-visible{ outline:none; box-shadow: var(--ring); }
     .btn-danger{ background: var(--danger); }
-    .btn-danger:hover{ filter:brightness(0.9); }
-    .btn-blue{ background: var(--blue); width:100%; }
+    .btn-danger:hover{ filter:brightness(0.92); }
+    .btn-blue{ background: var(--blue); }
     .btn-blue:hover{ background:#005a96; }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid #cfe0cf;
+      color: var(--green-3);
+    }
+    .btn-ghost:hover{ background:#eef6ee; }
 
-    /* Cart Panel */
+    /* Sections */
+    .section{ display:none; }
+    .section.active{ display:block; }
+
+    /* Panels */
+    .panel{
+      background:#fff;
+      padding:18px;
+      margin-top:18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .muted{ font-size:13px; color:var(--muted); margin-top:6px; }
+    .admin-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .admin-row > div{
+      flex: 1 1 220px;
+      min-width: 200px;
+    }
+    .admin-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    hr{
+      border:none;
+      border-top:1px solid #e6e6e6;
+      margin:16px 0;
+    }
+    .notice{
+      background:#fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:14px;
+      margin-top:14px;
+    }
+
+    /* Cart Drawer + backdrop */
+    #backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,0.35);
+      opacity:0;
+      pointer-events:none;
+      transition: 0.25s;
+      z-index: 950;
+    }
+    #backdrop.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
     #cartPanel{
       position:fixed;
-      right:-380px;
+      right:-420px;
       top:0;
-      width:360px;
+      width:400px;
       max-width:92vw;
       height:100%;
       background:#fff;
-      box-shadow:-2px 0 14px rgba(0,0,0,0.25);
+      box-shadow:-2px 0 16px rgba(0,0,0,0.30);
       padding:16px;
       transition: 0.28s;
       overflow-y:auto;
@@ -229,7 +340,7 @@
       padding:10px 0;
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:8px;
     }
     .cart-top{
       display:flex;
@@ -243,6 +354,7 @@
       align-items:center;
       gap:10px;
       font-size:14px;
+      flex-wrap:wrap;
     }
     .qty-controls{
       display:flex;
@@ -251,13 +363,15 @@
       flex-wrap:wrap;
     }
     .qty-btn{
-      padding:4px 10px;
-      border-radius:10px;
+      padding:6px 12px;
+      border-radius:12px;
       background: var(--green-1);
       color:#fff;
       border:none;
       cursor:pointer;
       font-weight:bold;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .qty-btn:hover{ background: var(--green-2); }
 
@@ -265,69 +379,6 @@
       margin-top:16px;
       border-top:1px solid #ccc;
       padding-top:12px;
-    }
-
-    input, select, textarea{
-      width:100%;
-      padding:10px 12px;
-      margin:6px 0;
-      border:1px solid #cfe0cf;
-      border-radius:12px;
-      outline:none;
-      font-family:inherit;
-    }
-    input:focus, select:focus, textarea:focus{
-      border-color: var(--green-1);
-      box-shadow: 0 0 0 3px rgba(58,125,68,0.15);
-    }
-
-    /* Admin Panels */
-    #adminPanel, #loginPanel{
-      background:#fff;
-      padding:18px;
-      margin-top:18px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    #adminPanel{ display:none; }
-
-    .admin-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-    .admin-row > div{
-      flex: 1 1 220px;
-      min-width: 200px;
-    }
-    .label{
-      font-size:13px;
-      margin-top:8px;
-      color:#355c35;
-      font-weight:bold;
-    }
-    .muted{
-      font-size:13px;
-      color:var(--muted);
-      margin-top:6px;
-    }
-    .admin-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    hr{
-      border:none;
-      border-top:1px solid #e6e6e6;
-      margin:16px 0;
-    }
-    .notice{
-      background:#fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:14px;
-      margin-top:14px;
     }
 
     .toast{
@@ -350,9 +401,18 @@
     }
     .toast.show{ opacity:1; transform:translateX(-50%) translateY(-4px); }
 
-    @media (max-width: 420px){
+    /* Mobile tweaks */
+    @media (max-width: 640px){
       .brand h1{ font-size:22px; }
       .hero h2{ font-size:26px; }
+      header{ padding:14px; }
+      nav{ top: 68px; }
+      .topbar{ flex-direction:column; align-items:stretch; }
+      .topbar .pill-link, .topbar .pill-btn{ width:100%; justify-content:center; }
+      #cartPanel{ width: 100%; max-width: 100%; right:-105%; border-left:none; }
+      #cartPanel.open{ right:0; }
+      .cards{ grid-template-columns: 1fr; }
+      .card img{ height: 170px; }
     }
   </style>
 </head>
@@ -362,8 +422,8 @@
 <header>
   <div class="header-inner">
     <div class="topbar">
-     https://djhpsawse.github.io/about-my-site/
-        About This Site
+      https://djhpsawse.github.io/about-my-site/
+        About this site
       </a>
 
       <button class="pill-btn" id="cartBtn" type="button" aria-label="Open cart">
@@ -372,48 +432,81 @@
     </div>
 
     <div class="brand">
-      <h1>Vegetable, Vegetation & Plants</h1>
+      <h1>Vegetable, Vegetation &amp; Plants</h1>
       <p>Growing a greener tomorrow</p>
     </div>
   </div>
 </header>
 
-<nav>
-  <button type="button" id="shopNavBtn">Shop</button>
+<nav aria-label="Primary navigation">
+  <button type="button" id="shopNavBtn" class="active">Shop</button>
   <button type="button" id="adminNavBtn">Admin</button>
 </nav>
 
 <section class="hero" aria-label="Hero banner">
   <div>
-    <h2>Fresh plants & seeds</h2>
-    <p>Browse by category, add to cart, and manage products in the admin panel.</p>
+    <h2>Fresh plants &amp; seeds</h2>
+    <p>Browse by category, add to cart, manage products in Admin, and test checkout via Stripe Payment Links.</p>
   </div>
 </section>
 
-<div class="container" id="shopSection">
+<!-- SHOP -->
+<div class="container section active" id="shopSection">
   <div class="section-title">
     <h2>Shop Plants</h2>
-    <p class="mini">Demo store — cart/products stored in your browser.</p>
+    <p class="mini">Demo store — cart/products saved in your browser (localStorage).</p>
   </div>
 
-  <div class="category-tabs" id="categoryTabs"></div>
+  <div class="toolbar" role="region" aria-label="Search and filters">
+    <div class="field" style="flex:2 1 320px;">
+      <label class="label" for="searchBar">Search</label>
+      <input id="searchBar" placeholder="Search plants..." aria-label="Search plants" />
+    </div>
 
-  <label class="label" for="searchBar" style="margin-top:0;">Search</label>
-  <input id="searchBar" placeholder="Search plants..." aria-label="Search plants" />
+    <div class="field">
+      <label class="label" for="sortSelect">Sort</label>
+      <select id="sortSelect" aria-label="Sort products">
+        <option value="name_asc">Name (A–Z)</option>
+        <option value="name_desc">Name (Z–A)</option>
+        <option value="price_asc">Price (Low–High)</option>
+        <option value="price_desc">Price (High–Low)</option>
+      </select>
+    </div>
+  </div>
 
+  <div class="category-tabs" id="categoryTabs" aria-label="Category tabs"></div>
   <div class="cards" id="productList" aria-live="polite"></div>
 
-  <div id="loginPanel">
-    <h2 style="margin-top:0;">Admin Login</h2>
-    <p class="muted">
-      Demo login (client-side). In a real website, admin must be server-side.
+  <div class="panel" id="orderNotice" style="display:none;">
+    <h3 style="margin:0 0 6px;">Thanks!</h3>
+    <p class="muted" style="margin:0;">
+      If you returned from Stripe, your cart has been cleared on this device.
+      (On a real site you’d verify payment server-side.)
     </p>
+  </div>
+</div>
 
-    <label class="label" for="user">Username</label>
-    <input id="user" placeholder="Username" autocomplete="username" />
+<!-- ADMIN -->
+<div class="container section" id="adminSection">
+  <div class="section-title">
+    <h2>Admin</h2>
+    <p class="mini">Client-side demo admin. For real security, use a server.</p>
+  </div>
 
-    <label class="label" for="pass">Password</label>
-    <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
+  <div class="panel" id="loginPanel">
+    <h3 style="margin-top:0;">Admin Login</h3>
+    <p class="muted">Demo credentials (client-side): <strong>admin@vvp</strong> / <strong>vegvegpla.admin@admin</strong></p>
+
+    <div class="admin-row">
+      <div>
+        <label class="label" for="user">Username</label>
+        <input id="user" placeholder="Username" autocomplete="username" />
+      </div>
+      <div>
+        <label class="label" for="pass">Password</label>
+        <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
+      </div>
+    </div>
 
     <div class="admin-actions">
       <button class="btn" id="loginBtn" type="button">Login</button>
@@ -421,27 +514,19 @@
         Clear Saved Data
       </button>
     </div>
-
-    <p class="muted" style="margin-bottom:0;">
-      Demo credentials:
-      <strong>admin@vvp</strong> /
-      <strong>vegvegpla.admin@admin</strong>
-    </p>
   </div>
 
-  <div id="adminPanel">
+  <div class="panel" id="adminPanel" style="display:none;">
     <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;">
-      <h2 style="margin:0;">Admin Panel — Manage Plants</h2>
+      <h3 style="margin:0;">Admin Panel — Manage Products</h3>
       <button class="btn btn-danger" id="logoutBtn" type="button">Logout</button>
     </div>
 
-    <p class="muted">
-      Products are saved to <code>localStorage</code> on this browser only.
-    </p>
+    <p class="muted">Products and cart are saved to <code>localStorage</code> on this device only.</p>
 
     <hr />
 
-    <h3 style="margin-top:0;">Add New Plant</h3>
+    <h4 style="margin-top:0;">Add New Product</h4>
     <div class="admin-row">
       <div>
         <div class="label">Name</div>
@@ -460,17 +545,16 @@
         <select id="category"></select>
       </div>
     </div>
-
     <div class="admin-actions">
       <button class="btn" id="addProductBtn" type="button">Add Product</button>
-      <button class="btn" id="restoreDefaultsBtn" type="button" title="Restore original products">
+      <button class="btn btn-ghost" id="restoreDefaultsBtn" type="button" title="Restore original products">
         Restore Defaults
       </button>
     </div>
 
     <hr />
 
-    <h3>Edit / Delete Existing Plant</h3>
+    <h4>Edit / Delete Product</h4>
     <div class="admin-row">
       <div>
         <div class="label">Select Product</div>
@@ -503,7 +587,7 @@
 
     <hr />
 
-    <h3>Backup / Transfer Products</h3>
+    <h4>Backup / Transfer Products</h4>
     <p class="muted">Export products to JSON, or import them back in.</p>
 
     <div class="admin-actions">
@@ -512,13 +596,22 @@
     </div>
 
     <textarea id="jsonBox" rows="7" placeholder="Your exported JSON will appear here..."></textarea>
+    <p class="muted" style="margin-bottom:0;">Tip: paste JSON from another device, then click <strong>Import JSON</strong>.</p>
+
+    <hr />
+
+    <h4>Stripe (Test) Payment Link</h4>
     <p class="muted" style="margin-bottom:0;">
-      Tip: You can paste JSON from another device, then click <strong>Import JSON</strong>.
+      This site supports Stripe checkout on GitHub Pages by redirecting to a Stripe <strong>Payment Link</strong>.
+      Put your test Payment Link into the config inside the script (look for <code>STRIPE_PAYMENT_LINK</code>).
     </p>
   </div>
 </div>
 
-<div id="cartPanel" aria-label="Shopping cart panel">
+<!-- CART DRAWER -->
+<div id="backdrop" aria-hidden="true"></div>
+
+<div id="cartPanel" aria-label="Shopping cart panel" aria-modal="true" role="dialog">
   <div class="cart-header">
     <h2>Your Cart</h2>
     <button class="pill-btn" id="closeCartBtn" type="button">Close</button>
@@ -528,22 +621,18 @@
   <h3>Total: £<span id="total">0.00</span></h3>
 
   <div id="checkout">
-    <h3>Checkout (Mock Stripe)</h3>
+    <h3>Checkout</h3>
 
-    <label class="label">Card Number</label>
-    <input placeholder="4242 4242 4242 4242" inputmode="numeric" />
-
-    <label class="label">Expiry</label>
-    <input placeholder="MM/YY" inputmode="numeric" />
-
-    <label class="label">CVC</label>
-    <input placeholder="123" inputmode="numeric" />
+    <p class="muted" style="margin-top:0;">
+      If you set a Stripe test Payment Link in the config, Pay Now will redirect there.
+      Otherwise, it will run a mock checkout.
+    </p>
 
     <button class="btn btn-blue" id="payBtn" type="button">Pay Now</button>
 
-    <p class="muted" style="margin-bottom:0;">
-      This is a demo payment — no real charge is made.
-    </p>
+    <button class="btn btn-ghost" id="clearCartBtn" type="button" style="margin-top:10px;width:100%;">
+      Clear Cart
+    </button>
   </div>
 </div>
 
@@ -553,9 +642,33 @@
 (() => {
   "use strict";
 
-  const CART_KEY = "vvp_cart_v1";
-  const PRODUCTS_KEY = "vvp_products_v1";
+  /**********************
+   * CONFIG
+   **********************/
+  // ✅ Stripe test integration for static sites:
+  // Create a Stripe TEST MODE Payment Link in your Stripe Dashboard, then paste it here.
+  // Example format: "https://buy.stripe.com/test_XXXXXXXXXXXXXX"
+  //
+  // Why Payment Link?
+  // Stripe has removed support for stripe.redirectToCheckout in Stripe.js; Payment Links are recommended for client-only setups.
+  // (True cart → Stripe line-items needs a backend.)
+  const STRIPE_PAYMENT_LINK = ""; // <-- PASTE YOUR TEST PAYMENT LINK HERE
 
+  // If you configure your Payment Link to redirect back to this page,
+  // you can use a return URL like:
+  //   https://YOUR-SITE/index.html?paid=1&session_id={CHECKOUT_SESSION_ID}
+  // Then this page will show a success notice and clear the cart.
+  const RETURN_SUCCESS_PARAM = "paid";
+
+  /**********************
+   * STORAGE KEYS
+   **********************/
+  const CART_KEY = "vvp_cart_v2";
+  const PRODUCTS_KEY = "vvp_products_v2";
+
+  /**********************
+   * DEFAULT PRODUCTS
+   **********************/
   const DEFAULT_PRODUCTS = [
     {id:1,  name:"rocket (cultivated)",          price:2.00, category:"Salad",      image:"https://premierseedsdirect.com/wp-content/uploads/2017/12/Rocket-Cultivated-2-021225-iStock-SQ-PS-1024x1024.jpg"},
     {id:2,  name:"red lettuce (salad bowl)",     price:2.50, category:"Salad",      image:"https://www.harrisseeds.com/cdn/shop/files/01527_900x.jpg?v=1736905903"},
@@ -563,30 +676,35 @@
     {id:4,  name:"tomato (agura)",               price:2.00, category:"Salad",      image:"https://media.istockphoto.com/id/512694992/photo/young-tomato-plant-growing-tomato-in-garden.jpg?s=170667a&w=0&k=20&c=2uXN2qMYOR1ZIuG1lQYFQZyGTN4CTLzaPHSL16JCsXY="},
     {id:5,  name:"spinach (perpetual)",          price:2.50, category:"Salad",      image:"https://premierseedsdirect.com/wp-content/uploads/2017/02/41579623-2.jpg"},
     {id:6,  name:"tomato (idyll)",               price:2.50, category:"Salad",      image:"https://www.jungepflanzen.de/media/5d/2c/99/1701199480/solanum_lycopersicum_idyll_1.jpg?ts=1701199480"},
-    {id:7,  name:"chives",                       price:2.00, category:"Herbs",      image:"https://tse3.mm.bing.net/th/id/OIP.EAd4tdgoNtf83f9Pp4NOxAHaJi?pid=ImgDet&w=474&h=610&rs=1&o=7&rm=3&adlt=strict"},
+    {id:7,  name:"chives",                       price:2.00, category:"Herbs",      image:"https://images.unsplash.com/photo-1524592911903-1f3b0b5a59f5?auto=format&fit=crop&w=1200&q=60"},
     {id:8,  name:"sorrel (garden)",              price:2.50, category:"Herbs",      image:"https://www.epicgardening.com/wp-content/uploads/2023/02/sorrel-plant-1200x667.jpeg"},
     {id:9,  name:"cauliflower (all season)",     price:2.50, category:"Salad",      image:"https://growplant.org/wp-content/uploads/2024/11/cauliflower-life-cycle-2.jpg"},
-    {id:10, name:"french bean (Ferrari)",        price:2.00, category:"Beans",      image:"https://th.bing.com/th/id/R.11359ce623cfe6edaf7a6cdf82b046b5?rik=cc2fJ4eQCnTMgQ&pid=ImgRaw&r=0&adlt=strict"},
-    {id:11, name:"broccoli (Calabrese)",         price:2.50, category:"Salad",      image:"https://tse2.mm.bing.net/th/id/OIP.YJ3Bqpw2MQwej-8tE43ePgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3&adlt=strict"},
-    {id:12, name:"beetroot (Detroit)",           price:2.00, category:"Roots",      image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
-    {id:13, name:"swiss chard (mixed)",          price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b"},
-    {id:14, name:"carrot (Cosmic purple)",       price:2.50, category:"Roots",      image:"https://images.unsplash.com/photo-1560807707-8cc77767d783"},
-    {id:15, name:"curly kale (Nero Di Toscana)", price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76"},
-    {id:16, name:"parsley",                      price:2.50, category:"Herbs",      image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6"},
-    {id:17, name:"cabbage (brunswick)",          price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1518977956815-dee0064f6a5a"},
-    {id:18, name:"basil (genovese)",             price:2.50, category:"Herbs",      image:"https://images.unsplash.com/photo-1515586838455-8f8f940d6853"},
-    {id:19, name:"mixed herb seeds",             price:2.20, category:"Seeds",      image:"https://images.unsplash.com/photo-1457530378978-8bac673b8062"},
-    {id:20, name:"starter gift box",             price:9.99, category:"Gift Boxes", image:"https://images.unsplash.com/photo-1542838132-92c53300491e"}
+    {id:10, name:"french bean (Ferrari)",        price:2.00, category:"Beans",      image:"https://images.unsplash.com/photo-1598032895397-b9472444bf93?auto=format&fit=crop&w=1200&q=60"},
+    {id:11, name:"broccoli (Calabrese)",         price:2.50, category:"Salad",      image:"https://images.unsplash.com/photo-1582515073490-dc84e2060b44?auto=format&fit=crop&w=1200&q=60"},
+    {id:12, name:"beetroot (Detroit)",           price:2.00, category:"Roots",      image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=1200&q=60"},
+    {id:13, name:"swiss chard (mixed)",          price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b?auto=format&fit=crop&w=1200&q=60"},
+    {id:14, name:"carrot (Cosmic purple)",       price:2.50, category:"Roots",      image:"https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=1200&q=60"},
+    {id:15, name:"curly kale (Nero Di Toscana)", price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76?auto=format&fit=crop&w=1200&q=60"},
+    {id:16, name:"parsley",                      price:2.50, category:"Herbs",      image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6?auto=format&fit=crop&w=1200&q=60"},
+    {id:17, name:"cabbage (brunswick)",          price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1518977956815-dee0064f6a5a?auto=format&fit=crop&w=1200&q=60"},
+    {id:18, name:"basil (genovese)",             price:2.50, category:"Herbs",      image:"https://images.unsplash.com/photo-1515586838455-8f8f940d6853?auto=format&fit=crop&w=1200&q=60"},
+    {id:19, name:"mixed herb seeds",             price:2.20, category:"Seeds",      image:"https://images.unsplash.com/photo-1457530378978-8bac673b8062?auto=format&fit=crop&w=1200&q=60"},
+    {id:20, name:"starter gift box",             price:9.99, category:"Gift Boxes", image:"https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=60"}
   ];
 
-  const CATEGORIES = ["All","Herbs","Roots","Salad","Beans","Seeds","Gift Boxes"];
-
+  /**********************
+   * STATE
+   **********************/
   let isAdmin = false;
   let products = DEFAULT_PRODUCTS.slice();
-  let cart = [];
+  let cart = []; // [{productId, qty}]
   let currentCategory = "All";
   let currentSearch = "";
+  let currentSort = "name_asc";
 
+  /**********************
+   * HELPERS
+   **********************/
   const el = (id) => document.getElementById(id);
 
   const productList = el("productList");
@@ -594,7 +712,11 @@
   const countSpan = el("count");
   const totalSpan = el("total");
   const cartPanel = el("cartPanel");
+  const backdrop = el("backdrop");
   const toast = el("toast");
+
+  const shopSection = el("shopSection");
+  const adminSection = el("adminSection");
 
   const loginPanel = el("loginPanel");
   const adminPanel = el("adminPanel");
@@ -611,6 +733,11 @@
   function normaliseCategory(cat){ return safeStr(cat).toLowerCase(); }
   function nextProductId(){ return products.length ? Math.max(...products.map(p => Number(p.id))) + 1 : 1; }
   function findProduct(id){ return products.find(p => Number(p.id) === Number(id)); }
+
+  function uniqueCategories(){
+    const set = new Set(products.map(p => safeStr(p.category)).filter(Boolean));
+    return ["All", ...Array.from(set).sort((a,b) => a.localeCompare(b))];
+  }
 
   function saveProducts(){ localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products)); }
   function loadProducts(){
@@ -638,6 +765,7 @@
     saveProducts();
     cart = cart.filter(c => findProduct(c.productId));
     saveCart();
+    currentCategory = "All";
     renderAll();
     showToast("Restored default products");
   }
@@ -656,10 +784,40 @@
     }catch(e){ cart = []; }
   }
 
+  /**********************
+   * UI: NAV + SECTIONS
+   **********************/
+  function setActiveSection(which){
+    const shopBtn = el("shopNavBtn");
+    const adminBtn = el("adminNavBtn");
+
+    if (which === "shop"){
+      shopSection.classList.add("active");
+      adminSection.classList.remove("active");
+      shopBtn.classList.add("active");
+      adminBtn.classList.remove("active");
+      shopSection.scrollIntoView({behavior:"smooth"});
+    } else {
+      adminSection.classList.add("active");
+      shopSection.classList.remove("active");
+      adminBtn.classList.add("active");
+      shopBtn.classList.remove("active");
+      adminSection.scrollIntoView({behavior:"smooth"});
+    }
+  }
+
+  /**********************
+   * UI: CATEGORIES + SORT
+   **********************/
   function renderCategoryTabs(){
     const tabs = el("categoryTabs");
     tabs.innerHTML = "";
-    CATEGORIES.forEach(cat => {
+    const cats = uniqueCategories();
+
+    // Keep selection valid
+    if (!cats.includes(currentCategory)) currentCategory = "All";
+
+    cats.forEach(cat => {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "category-tab" + (cat === currentCategory ? " active" : "");
@@ -674,30 +832,32 @@
     });
   }
 
-  function populateCategorySelects(){
-    const addSel = el("category");
-    const editSel = el("editCategory");
-    [addSel, editSel].forEach(sel => {
-      sel.innerHTML = "";
-      CATEGORIES.filter(c => c !== "All").forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c;
-        sel.appendChild(opt);
-      });
-    });
+  function applySort(list){
+    const copy = list.slice();
+    switch(currentSort){
+      case "name_desc": return copy.sort((a,b) => b.name.localeCompare(a.name));
+      case "price_asc": return copy.sort((a,b) => Number(a.price) - Number(b.price));
+      case "price_desc": return copy.sort((a,b) => Number(b.price) - Number(a.price));
+      case "name_asc":
+      default: return copy.sort((a,b) => a.name.localeCompare(b.name));
+    }
   }
 
+  /**********************
+   * UI: PRODUCT LIST
+   **********************/
   function renderProducts(){
     productList.innerHTML = "";
     const searchLower = safeStr(currentSearch).toLowerCase();
     const catLower = normaliseCategory(currentCategory);
 
-    const filtered = products.filter(p => {
+    let filtered = products.filter(p => {
       if (currentCategory !== "All" && normaliseCategory(p.category) !== catLower) return false;
       if (searchLower && !p.name.toLowerCase().includes(searchLower)) return false;
       return true;
     });
+
+    filtered = applySort(filtered);
 
     if (!filtered.length){
       const empty = document.createElement("div");
@@ -748,6 +908,9 @@
     });
   }
 
+  /**********************
+   * CART
+   **********************/
   function addItem(productId){
     const p = findProduct(productId);
     if (!p) return;
@@ -768,6 +931,12 @@
     cart[index].qty += delta;
     if (cart[index].qty <= 0) cart.splice(index, 1);
     updateCart();
+  }
+
+  function clearCart(){
+    cart = [];
+    updateCart();
+    showToast("Cart cleared");
   }
 
   function updateCart(){
@@ -824,8 +993,8 @@
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "btn btn-danger";
-      remove.style.padding = "6px 10px";
-      remove.style.borderRadius = "10px";
+      remove.style.padding = "8px 12px";
+      remove.style.borderRadius = "12px";
       remove.style.fontSize = "12px";
       remove.textContent = "Remove";
       remove.addEventListener("click", () => removeItem(i));
@@ -849,6 +1018,20 @@
     const isOpen = cartPanel.classList.contains("open");
     const shouldOpen = (typeof open === "boolean") ? open : !isOpen;
     cartPanel.classList.toggle("open", shouldOpen);
+    backdrop.classList.toggle("show", shouldOpen);
+    backdrop.setAttribute("aria-hidden", shouldOpen ? "false" : "true");
+  }
+
+  /**********************
+   * STRIPE PAYMENT LINK CHECKOUT (STATIC)
+   **********************/
+  function cartTotalInPence(){
+    let total = 0;
+    for (const c of cart){
+      const p = findProduct(c.productId);
+      if (p) total += Number(p.price) * Number(c.qty);
+    }
+    return Math.round(total * 100);
   }
 
   function payNow(){
@@ -856,12 +1039,33 @@
       alert("Your cart is empty.");
       return;
     }
-    alert("Payment Successful (Mock Stripe)");
+
+    // If Stripe Payment Link is configured, redirect there (test mode link works on static sites).
+    if (safeStr(STRIPE_PAYMENT_LINK)){
+      // Optional: pass a reference ID. This doesn't change line items (Payment Links are fixed),
+      // but can help you reconcile in Stripe if you use webhooks later.
+      const ref = encodeURIComponent("vvp_" + Date.now());
+      const url = STRIPE_PAYMENT_LINK + (STRIPE_PAYMENT_LINK.includes("?") ? "&" : "?") + "client_reference_id=" + ref;
+
+      // Save a snapshot locally (for your own demo record)
+      localStorage.setItem("vvp_last_checkout_ref", ref);
+      localStorage.setItem("vvp_last_checkout_cart", JSON.stringify({ ref, cart, totalPence: cartTotalInPence(), at: new Date().toISOString() }));
+
+      // Redirect to Stripe hosted checkout
+      window.location.href = url;
+      return;
+    }
+
+    // Fallback: mock checkout
+    alert("Payment Successful (Mock Checkout)\n\nTip: paste a Stripe TEST Payment Link into STRIPE_PAYMENT_LINK to use Stripe.");
     cart = [];
     updateCart();
     toggleCart(false);
   }
 
+  /**********************
+   * ADMIN LOGIN + CRUD
+   **********************/
   function login(){
     const u = safeStr(el("user").value);
     const p = safeStr(el("pass").value);
@@ -870,6 +1074,7 @@
       adminPanel.style.display = "block";
       loginPanel.style.display = "none";
       populateEditSelect();
+      populateCategorySelects();
       showToast("Logged in as admin");
       adminPanel.scrollIntoView({ behavior: "smooth" });
     } else {
@@ -886,6 +1091,34 @@
     showToast("Logged out");
   }
 
+  function populateCategorySelects(){
+    const cats = uniqueCategories().filter(c => c !== "All");
+    const addSel = el("category");
+    const editSel = el("editCategory");
+
+    [addSel, editSel].forEach(sel => {
+      sel.innerHTML = "";
+      cats.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        sel.appendChild(opt);
+      });
+    });
+
+    // If no categories exist, provide a default list
+    if (!cats.length){
+      ["Herbs","Roots","Salad","Beans","Seeds","Gift Boxes"].forEach(c => {
+        const opt1 = document.createElement("option");
+        opt1.value = c; opt1.textContent = c;
+        addSel.appendChild(opt1);
+        const opt2 = document.createElement("option");
+        opt2.value = c; opt2.textContent = c;
+        editSel.appendChild(opt2);
+      });
+    }
+  }
+
   function addProduct(){
     if (!isAdmin) return;
 
@@ -898,13 +1131,17 @@
       alert("Please enter a name and a valid price.");
       return;
     }
+    if (!category){
+      alert("Please choose a category.");
+      return;
+    }
 
     const newP = {
       id: nextProductId(),
       name,
       price: Number(priceValue.toFixed(2)),
       image: image || "https://via.placeholder.com/600x400?text=Plant",
-      category: category || "Salad"
+      category
     };
 
     products.push(newP);
@@ -914,7 +1151,7 @@
     el("price").value = "";
     el("image").value = "";
 
-    renderProducts();
+    renderAll();
     populateEditSelect();
     showToast("Product added");
   }
@@ -967,11 +1204,15 @@
       alert("Please enter a name and a valid price.");
       return;
     }
+    if (!category){
+      alert("Please choose a category.");
+      return;
+    }
 
     p.name = name;
     p.price = Number(priceValue.toFixed(2));
     p.image = image || "https://via.placeholder.com/600x400?text=Plant";
-    p.category = category || p.category;
+    p.category = category;
 
     saveProducts();
 
@@ -979,6 +1220,7 @@
     saveCart();
 
     renderAll();
+    populateEditSelect();
     showToast("Product updated");
   }
 
@@ -1008,8 +1250,8 @@
     el("editPrice").value = "";
     el("editImage").value = "";
 
-    populateEditSelect();
     renderAll();
+    populateEditSelect();
     showToast("Product deleted");
   }
 
@@ -1063,8 +1305,8 @@
       cart = cart.filter(c => findProduct(c.productId));
       saveCart();
 
-      populateEditSelect();
       renderAll();
+      populateEditSelect();
       showToast("Imported products");
     }catch(e){
       alert("Invalid JSON.");
@@ -1078,28 +1320,57 @@
     localStorage.removeItem(CART_KEY);
     products = DEFAULT_PRODUCTS.slice();
     cart = [];
+    currentCategory = "All";
     renderAll();
     showToast("Cleared saved data");
   }
 
-  function scrollToShop(){ el("shopSection").scrollIntoView({ behavior: "smooth" }); }
-  function scrollToAdmin(){ loginPanel.scrollIntoView({ behavior: "smooth" }); }
+  /**********************
+   * SUCCESS RETURN HANDLING (STATIC)
+   **********************/
+  function handleReturnFromStripe(){
+    const params = new URLSearchParams(window.location.search);
+    if (params.get(RETURN_SUCCESS_PARAM) === "1"){
+      // Clear cart locally (demo)
+      cart = [];
+      saveCart();
+      updateCart();
 
+      const box = el("orderNotice");
+      if (box) box.style.display = "block";
+    }
+  }
+
+  /**********************
+   * RENDER ALL
+   **********************/
   function renderAll(){
     renderCategoryTabs();
     renderProducts();
     updateCart();
+    populateCategorySelects();
   }
 
+  /**********************
+   * EVENTS
+   **********************/
   el("cartBtn").addEventListener("click", () => toggleCart());
   el("closeCartBtn").addEventListener("click", () => toggleCart(false));
-  el("payBtn").addEventListener("click", payNow);
+  backdrop.addEventListener("click", () => toggleCart(false));
 
-  el("shopNavBtn").addEventListener("click", scrollToShop);
-  el("adminNavBtn").addEventListener("click", scrollToAdmin);
+  el("payBtn").addEventListener("click", payNow);
+  el("clearCartBtn").addEventListener("click", clearCart);
+
+  el("shopNavBtn").addEventListener("click", () => setActiveSection("shop"));
+  el("adminNavBtn").addEventListener("click", () => setActiveSection("admin"));
 
   el("searchBar").addEventListener("input", (e) => {
     currentSearch = e.target.value;
+    renderProducts();
+  });
+
+  el("sortSelect").addEventListener("change", (e) => {
+    currentSort = e.target.value;
     renderProducts();
   });
 
@@ -1120,10 +1391,18 @@
   el("importBtn").addEventListener("click", importJSON);
   el("clearAllBtn").addEventListener("click", clearSavedData);
 
-  populateCategorySelects();
+  // ESC closes cart
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") toggleCart(false);
+  });
+
+  /**********************
+   * INIT
+   **********************/
   loadProducts();
   loadCart();
   renderAll();
+  handleReturnFromStripe();
 
 })();
 </script>
