@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vegetable, Vegetation &amp; Plants</title>
-  <meta name="description" content="Vegetable, Vegetation & Plants — Growing a greener tomorrow. Demo shop with admin panel, categories, persistent cart/products, and Stripe test Payment Link support." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vegetable, Vegetation & Plants</title>
+
+  <meta name="description"
+        content="Vegetable, Vegetation & Plants — demo plant shop with cart, admin panel, and Stripe Payment Link checkout." />
 
   <style>
     :root{
@@ -16,403 +18,199 @@
       --muted:#486a48;
       --danger:#d62828;
       --blue:#0070ba;
-      --shadow: 0 2px 10px rgba(0,0,0,0.10);
-      --radius: 18px;
-      --ring: 0 0 0 3px rgba(58,125,68,0.18);
+      --shadow:0 2px 10px rgba(0,0,0,.1);
+      --radius:18px;
+      --ring:0 0 0 3px rgba(58,125,68,.25);
     }
-    *{ box-sizing:border-box; }
-    html{ -webkit-text-size-adjust:100%; }
+
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--green-3);
-      min-height:100vh;
-      min-height:100dvh;
-      padding:
-        env(safe-area-inset-top)
-        env(safe-area-inset-right)
-        env(safe-area-inset-bottom)
-        env(safe-area-inset-left);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--green-3);
     }
 
     header{
-      background: var(--green-1);
-      color:#fff;
-      padding:16px;
-      position:sticky;
-      top:0;
-      z-index:900;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      position:sticky;top:0;z-index:900;
+      background:var(--green-1);color:#fff;
+      box-shadow:var(--shadow);
     }
+
     .header-inner{
       max-width:1100px;
       margin:auto;
+      padding:16px;
       display:flex;
       flex-direction:column;
       gap:12px;
     }
+
     .topbar{
       display:flex;
-      align-items:center;
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
     }
-    .pill-link, .pill-btn{
+
+    .pill-link,.pill-btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:8px;
+      padding:10px 14px;
+      border-radius:14px;
       background:#fff;
       color:var(--green-3);
-      padding:10px 12px;
-      border-radius:14px;
-      cursor:pointer;
-      user-select:none;
       font-weight:bold;
-      text-decoration:none;
-      box-shadow:0 2px 8px rgba(0,0,0,0.18);
       border:none;
-      line-height:1;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      cursor:pointer;
+      text-decoration:none;
+      box-shadow:0 2px 8px rgba(0,0,0,.2);
     }
-    .pill-link:hover, .pill-btn:hover{ background:#e8f2e8; }
-    .pill-btn:focus-visible, .pill-link:focus-visible{ outline:none; box-shadow: 0 0 0 3px rgba(255,255,255,0.35), var(--ring); }
-    .brand{ text-align:center; line-height:1.12; }
-    .brand h1{ margin:0; font-size:28px; }
-    .brand p{ margin:6px 0 0; opacity:0.95; }
+    .pill-link:hover,.pill-btn:hover{background:#e8f2e8}
+    .pill-btn:focus-visible,.pill-link:focus-visible{outline:none;box-shadow:var(--ring)}
+
+    .brand{text-align:center}
+    .brand h1{margin:0;font-size:28px}
+    .brand p{margin:6px 0 0;opacity:.95}
 
     nav{
-      display:flex;
-      justify-content:center;
-      background: var(--green-2);
-      flex-wrap:wrap;
-      gap:6px;
-      padding:8px;
-      position:sticky;
-      top:72px; /* below header */
-      z-index:850;
+      position:sticky;top:72px;z-index:850;
+      display:flex;gap:6px;justify-content:center;
+      background:var(--green-2);padding:8px;
     }
     nav button{
-      background:rgba(255,255,255,0.08);
-      border:none;
-      color:#fff;
-      padding:12px 16px;
-      cursor:pointer;
+      background:rgba(255,255,255,.12);
+      color:#fff;border:none;
+      padding:10px 16px;
       border-radius:12px;
       font-weight:bold;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      cursor:pointer;
     }
-    nav button:hover{ background:rgba(255,255,255,0.16); }
-    nav button.active{ background:#4caf50; }
+    nav button.active{background:#4caf50}
 
     .hero{
-      background: url('https://raw.githubusercontent.com/djhpsawse/vegetable-vegetation-plants/refs/heads/main/Designer.png') center/cover;
       min-height:260px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.75);
-      text-align:center;
-      padding:24px 16px;
-    }
-    .hero h2{ margin:0; font-size:34px; }
-    .hero p{ margin:10px 0 0; font-size:16px; max-width: 70ch; }
-
-    .container{
+      background:url("https://raw.githubusercontent.com/djhpsawse/vegetable-vegetation-plants/refs/heads/main/Designer.png")
+                 center/cover;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;text-align:center;
+      text-shadow:0 2px 6px rgba(0,0,0,.7);
       padding:20px;
-      max-width:1100px;
-      margin:auto;
     }
-    .section-title{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .section-title h2{ margin:0; }
-    .mini{ font-size:12px; color:var(--muted); margin:0; }
+
+    .container{max-width:1100px;margin:auto;padding:20px}
+    .section{display:none}
+    .section.active{display:block}
 
     .toolbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:flex-end;
-      margin-top:14px;
+      display:flex;gap:12px;flex-wrap:wrap;margin-top:14px
     }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      flex: 1 1 260px;
-      min-width: 220px;
+    .field{flex:1 1 240px;display:flex;flex-direction:column;gap:6px}
+    label{font-size:13px;font-weight:bold;color:#355c35}
+
+    input,select,textarea{
+      padding:10px 12px;border-radius:14px;
+      border:1px solid #cfe0cf;font-family:inherit
     }
-    .label{
-      font-size:13px;
-      color:#355c35;
-      font-weight:bold;
-    }
-    input, select, textarea{
-      width:100%;
-      padding:10px 12px;
-      border:1px solid #cfe0cf;
-      border-radius:14px;
-      outline:none;
-      font-family:inherit;
-      background:#fff;
-    }
-    input:focus, select:focus, textarea:focus{
-      border-color: var(--green-1);
-      box-shadow: var(--ring);
+    input:focus,select:focus,textarea:focus{
+      outline:none;border-color:var(--green-1);box-shadow:var(--ring)
     }
 
-    .category-tabs{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin: 14px 0 6px;
-    }
+    .category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
     .category-tab{
-      padding:8px 14px;
-      border-radius:999px;
+      padding:8px 14px;border-radius:999px;
       border:1px solid var(--green-1);
-      background:#fff;
-      color:var(--green-1);
-      cursor:pointer;
-      font-size:14px;
-      font-weight:bold;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      background:#fff;color:var(--green-1);
+      font-weight:bold;cursor:pointer
     }
-    .category-tab.active{
-      background:var(--green-1);
-      color:#fff;
-    }
+    .category-tab.active{background:var(--green-1);color:#fff}
 
     .cards{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
       gap:18px;
-      margin-top: 12px;
     }
+
     .card{
-      background:var(--card);
+      background:#fff;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
       padding:14px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      display:flex;flex-direction:column;gap:10px;
       text-align:center;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      overflow:hidden;
     }
+
     .card img{
-      width:100%;
-      height:160px;
-      object-fit:cover;
-      border-radius:16px;
-      background:#e9f3e9;
+      width:100%;height:160px;
+      object-fit:cover;border-radius:14px;
     }
-    .card h3{ margin:0; font-size:16px; }
-    .card .meta{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:14px;
-      color:var(--muted);
-    }
-    .price{ font-weight:bold; color: var(--green-3); }
+
+    .meta{display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
+    .price{font-weight:bold}
 
     .btn{
-      background: var(--green-1);
-      color:#fff;
-      border:none;
-      padding:10px 12px;
-      cursor:pointer;
+      padding:10px 14px;
       border-radius:14px;
-      font-weight:bold;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-    .btn:hover{ background: var(--green-2); }
-    .btn:focus-visible{ outline:none; box-shadow: var(--ring); }
-    .btn-danger{ background: var(--danger); }
-    .btn-danger:hover{ filter:brightness(0.92); }
-    .btn-blue{ background: var(--blue); }
-    .btn-blue:hover{ background:#005a96; }
-    .btn-ghost{
-      background:transparent;
-      border:1px solid #cfe0cf;
-      color: var(--green-3);
-    }
-    .btn-ghost:hover{ background:#eef6ee; }
-
-    /* Sections */
-    .section{ display:none; }
-    .section.active{ display:block; }
-
-    /* Panels */
-    .panel{
-      background:#fff;
-      padding:18px;
-      margin-top:18px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .muted{ font-size:13px; color:var(--muted); margin-top:6px; }
-    .admin-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-    .admin-row > div{
-      flex: 1 1 220px;
-      min-width: 200px;
-    }
-    .admin-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    hr{
       border:none;
-      border-top:1px solid #e6e6e6;
-      margin:16px 0;
+      font-weight:bold;
+      cursor:pointer;
+      background:var(--green-1);
+      color:#fff;
     }
-    .notice{
-      background:#fff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:14px;
-      margin-top:14px;
-    }
+    .btn:hover{background:var(--green-2)}
+    .btn-danger{background:var(--danger)}
+    .btn-blue{background:var(--blue)}
+    .btn-ghost{background:transparent;border:1px solid #cfe0cf;color:var(--green-3)}
 
-    /* Cart Drawer + backdrop */
+    /* CART DRAWER */
     #backdrop{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.35);
-      opacity:0;
-      pointer-events:none;
-      transition: 0.25s;
-      z-index: 950;
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.35);
+      opacity:0;pointer-events:none;
+      transition:.25s;z-index:950;
     }
-    #backdrop.show{
-      opacity:1;
-      pointer-events:auto;
-    }
+    #backdrop.show{opacity:1;pointer-events:auto}
 
     #cartPanel{
-      position:fixed;
-      right:-420px;
-      top:0;
-      width:400px;
-      max-width:92vw;
-      height:100%;
-      background:#fff;
-      box-shadow:-2px 0 16px rgba(0,0,0,0.30);
+      position:fixed;right:-420px;top:0;
+      width:400px;max-width:95vw;height:100%;
+      background:#fff;z-index:1000;
+      box-shadow:-2px 0 16px rgba(0,0,0,.3);
       padding:16px;
-      transition: 0.28s;
+      transition:.28s;
       overflow-y:auto;
-      z-index:1000;
-      border-left: 1px solid #e7e7e7;
     }
-    #cartPanel.open{ right:0; }
+    #cartPanel.open{right:0}
 
-    .cart-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
-    }
-    .cart-header h2{ margin:6px 0; }
+    .cart-header{display:flex;justify-content:space-between;align-items:center}
 
-    .cart-item{
-      border-bottom:1px solid #eee;
-      padding:10px 0;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .cart-top{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      font-weight:bold;
-    }
-    .cart-qty-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      font-size:14px;
-      flex-wrap:wrap;
-    }
-    .qty-controls{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+    .cart-item{border-bottom:1px solid #eee;padding:10px 0}
+    .cart-top{display:flex;justify-content:space-between;font-weight:bold}
+
+    .qty-controls{display:flex;gap:8px;align-items:center}
     .qty-btn{
-      padding:6px 12px;
-      border-radius:12px;
-      background: var(--green-1);
-      color:#fff;
-      border:none;
-      cursor:pointer;
-      font-weight:bold;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-    .qty-btn:hover{ background: var(--green-2); }
-
-    #checkout{
-      margin-top:16px;
-      border-top:1px solid #ccc;
-      padding-top:12px;
+      padding:6px 12px;border-radius:12px;
+      background:var(--green-1);color:#fff;border:none;
+      cursor:pointer;font-weight:bold
     }
 
     .toast{
-      position:fixed;
-      left:50%;
-      bottom:18px;
+      position:fixed;left:50%;bottom:18px;
       transform:translateX(-50%);
-      background:#1f2d1f;
-      color:#fff;
-      padding:10px 14px;
+      background:#1f2d1f;color:#fff;
+      padding:10px 16px;
       border-radius:999px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-      opacity:0;
-      pointer-events:none;
-      transition:0.25s;
+      opacity:0;pointer-events:none;
+      transition:.25s;
       z-index:2000;
-      font-size:14px;
-      max-width: 92vw;
-      text-align:center;
     }
-    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-4px); }
+    .toast.show{opacity:1}
 
-    /* Mobile tweaks */
-    @media (max-width: 640px){
-      .brand h1{ font-size:22px; }
-      .hero h2{ font-size:26px; }
-      header{ padding:14px; }
-      nav{ top: 68px; }
-      .topbar{ flex-direction:column; align-items:stretch; }
-      .topbar .pill-link, .topbar .pill-btn{ width:100%; justify-content:center; }
-      #cartPanel{ width: 100%; max-width: 100%; right:-105%; border-left:none; }
-      #cartPanel.open{ right:0; }
-      .cards{ grid-template-columns: 1fr; }
-      .card img{ height: 170px; }
+    @media(max-width:640px){
+      .cards{grid-template-columns:1fr}
+      nav{top:68px}
     }
   </style>
 </head>
@@ -422,50 +220,48 @@
 <header>
   <div class="header-inner">
     <div class="topbar">
-      https://djhpsawse.github.io/about-my-site/
+      <a class="pill-link"
+         href="https://djhpsawse.github.io/about-my-site/"
+         target="_blank" rel="noopener noreferrer">
         About this site
       </a>
 
-      <button class="pill-btn" id="cartBtn" type="button" aria-label="Open cart">
+      <button class="pill-btn" id="cartBtn">
         Cart (<span id="count">0</span>)
       </button>
     </div>
 
     <div class="brand">
-      <h1>Vegetable, Vegetation &amp; Plants</h1>
+      <h1>Vegetable, Vegetation & Plants</h1>
       <p>Growing a greener tomorrow</p>
     </div>
   </div>
 </header>
 
-<nav aria-label="Primary navigation">
-  <button type="button" id="shopNavBtn" class="active">Shop</button>
-  <button type="button" id="adminNavBtn">Admin</button>
+<nav>
+  <button id="shopNavBtn" class="active">Shop</button>
+  <button id="adminNavBtn">Admin</button>
 </nav>
 
-<section class="hero" aria-label="Hero banner">
+<section class="hero">
   <div>
-    <h2>Fresh plants &amp; seeds</h2>
-    <p>Browse by category, add to cart, manage products in Admin, and test checkout via Stripe Payment Links.</p>
+    <h2>Fresh plants & seeds</h2>
+    <p>Browse, add to cart, manage products, and test Stripe checkout.</p>
   </div>
 </section>
 
 <!-- SHOP -->
 <div class="container section active" id="shopSection">
-  <div class="section-title">
-    <h2>Shop Plants</h2>
-    <p class="mini">Demo store — cart/products saved in your browser (localStorage).</p>
-  </div>
+  <h2>Shop Plants</h2>
 
-  <div class="toolbar" role="region" aria-label="Search and filters">
-    <div class="field" style="flex:2 1 320px;">
-      <label class="label" for="searchBar">Search</label>
-      <input id="searchBar" placeholder="Search plants..." aria-label="Search plants" />
+  <div class="toolbar">
+    <div class="field" style="flex:2">
+      <label>Search</label>
+      <input id="searchBar" placeholder="Search plants…" />
     </div>
-
     <div class="field">
-      <label class="label" for="sortSelect">Sort</label>
-      <select id="sortSelect" aria-label="Sort products">
+      <label>Sort</label>
+      <select id="sortSelect">
         <option value="name_asc">Name (A–Z)</option>
         <option value="name_desc">Name (Z–A)</option>
         <option value="price_asc">Price (Low–High)</option>
@@ -474,938 +270,194 @@
     </div>
   </div>
 
-  <div class="category-tabs" id="categoryTabs" aria-label="Category tabs"></div>
-  <div class="cards" id="productList" aria-live="polite"></div>
-
-  <div class="panel" id="orderNotice" style="display:none;">
-    <h3 style="margin:0 0 6px;">Thanks!</h3>
-    <p class="muted" style="margin:0;">
-      If you returned from Stripe, your cart has been cleared on this device.
-      (On a real site you’d verify payment server-side.)
-    </p>
-  </div>
+  <div class="category-tabs" id="categoryTabs"></div>
+  <div class="cards" id="productList"></div>
 </div>
 
-<!-- ADMIN -->
-<div class="container section" id="adminSection">
-  <div class="section-title">
-    <h2>Admin</h2>
-    <p class="mini">Client-side demo admin. For real security, use a server.</p>
-  </div>
+<!-- CART -->
+<div id="backdrop"></div>
 
-  <div class="panel" id="loginPanel">
-    <h3 style="margin-top:0;">Admin Login</h3>
-    <p class="muted">Demo credentials (client-side): <strong>admin@vvp</strong> / <strong>vegvegpla.admin@admin</strong></p>
-
-    <div class="admin-row">
-      <div>
-        <label class="label" for="user">Username</label>
-        <input id="user" placeholder="Username" autocomplete="username" />
-      </div>
-      <div>
-        <label class="label" for="pass">Password</label>
-        <input id="pass" type="password" placeholder="Password" autocomplete="current-password" />
-      </div>
-    </div>
-
-    <div class="admin-actions">
-      <button class="btn" id="loginBtn" type="button">Login</button>
-      <button class="btn btn-danger" id="clearAllBtn" type="button" title="Clears saved products/cart on this device">
-        Clear Saved Data
-      </button>
-    </div>
-  </div>
-
-  <div class="panel" id="adminPanel" style="display:none;">
-    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;">
-      <h3 style="margin:0;">Admin Panel — Manage Products</h3>
-      <button class="btn btn-danger" id="logoutBtn" type="button">Logout</button>
-    </div>
-
-    <p class="muted">Products and cart are saved to <code>localStorage</code> on this device only.</p>
-
-    <hr />
-
-    <h4 style="margin-top:0;">Add New Product</h4>
-    <div class="admin-row">
-      <div>
-        <div class="label">Name</div>
-        <input id="name" placeholder="Plant Name" />
-      </div>
-      <div>
-        <div class="label">Price (£)</div>
-        <input id="price" type="number" step="0.01" min="0" placeholder="2.50" />
-      </div>
-      <div>
-        <div class="label">Image URL</div>
-        <input id="image" placeholder="https://..." />
-      </div>
-      <div>
-        <div class="label">Category</div>
-        <select id="category"></select>
-      </div>
-    </div>
-    <div class="admin-actions">
-      <button class="btn" id="addProductBtn" type="button">Add Product</button>
-      <button class="btn btn-ghost" id="restoreDefaultsBtn" type="button" title="Restore original products">
-        Restore Defaults
-      </button>
-    </div>
-
-    <hr />
-
-    <h4>Edit / Delete Product</h4>
-    <div class="admin-row">
-      <div>
-        <div class="label">Select Product</div>
-        <select id="editSelect">
-          <option value="">-- Select --</option>
-        </select>
-      </div>
-      <div>
-        <div class="label">Name</div>
-        <input id="editName" placeholder="Plant Name" />
-      </div>
-      <div>
-        <div class="label">Price (£)</div>
-        <input id="editPrice" type="number" step="0.01" min="0" placeholder="2.50" />
-      </div>
-      <div>
-        <div class="label">Image URL</div>
-        <input id="editImage" placeholder="https://..." />
-      </div>
-      <div>
-        <div class="label">Category</div>
-        <select id="editCategory"></select>
-      </div>
-    </div>
-
-    <div class="admin-actions">
-      <button class="btn" id="saveEditBtn" type="button">Save Changes</button>
-      <button class="btn btn-danger" id="deleteBtn" type="button">Delete Product</button>
-    </div>
-
-    <hr />
-
-    <h4>Backup / Transfer Products</h4>
-    <p class="muted">Export products to JSON, or import them back in.</p>
-
-    <div class="admin-actions">
-      <button class="btn" id="exportBtn" type="button">Export JSON</button>
-      <button class="btn" id="importBtn" type="button">Import JSON</button>
-    </div>
-
-    <textarea id="jsonBox" rows="7" placeholder="Your exported JSON will appear here..."></textarea>
-    <p class="muted" style="margin-bottom:0;">Tip: paste JSON from another device, then click <strong>Import JSON</strong>.</p>
-
-    <hr />
-
-    <h4>Stripe (Test) Payment Link</h4>
-    <p class="muted" style="margin-bottom:0;">
-      This site supports Stripe checkout on GitHub Pages by redirecting to a Stripe <strong>Payment Link</strong>.
-      Put your test Payment Link into the config inside the script (look for <code>STRIPE_PAYMENT_LINK</code>).
-    </p>
-  </div>
-</div>
-
-<!-- CART DRAWER -->
-<div id="backdrop" aria-hidden="true"></div>
-
-<div id="cartPanel" aria-label="Shopping cart panel" aria-modal="true" role="dialog">
+<div id="cartPanel" role="dialog" aria-modal="true">
   <div class="cart-header">
     <h2>Your Cart</h2>
-    <button class="pill-btn" id="closeCartBtn" type="button">Close</button>
+    <button class="pill-btn" id="closeCartBtn">Close</button>
   </div>
 
   <div id="cartItems"></div>
   <h3>Total: £<span id="total">0.00</span></h3>
 
-  <div id="checkout">
-    <h3>Checkout</h3>
-
-    <p class="muted" style="margin-top:0;">
-      If you set a Stripe test Payment Link in the config, Pay Now will redirect there.
-      Otherwise, it will run a mock checkout.
-    </p>
-
-    <button class="btn btn-blue" id="payBtn" type="button">Pay Now</button>
-
-    <button class="btn btn-ghost" id="clearCartBtn" type="button" style="margin-top:10px;width:100%;">
-      Clear Cart
-    </button>
-  </div>
+  <button class="btn btn-blue" id="payBtn">Pay Now</button>
+  <button class="btn btn-ghost" id="clearCartBtn" style="width:100%;margin-top:10px">
+    Clear Cart
+  </button>
 </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="toast" id="toast"></div>
 
 <script>
 (() => {
-  "use strict";
+"use strict";
 
-  /**********************
-   * CONFIG
-   **********************/
-  // ✅ Stripe test integration for static sites:
-  // Create a Stripe TEST MODE Payment Link in your Stripe Dashboard, then paste it here.
-  // Example format: "https://buy.stripe.com/test_bIY6pA2XhgGW4Cc7su"
-  //
-  // Why Payment Link?
-  // Stripe has removed support for stripe.redirectToCheckout in Stripe.js; Payment Links are recommended for client-only setups.
-  // (True cart → Stripe line-items needs a backend.)
-  const  = ""; // <-- PASTE YOUR TEST PAYMENT LINK HERE
+/* ================= CONFIG ================= */
+const STRIPE_PAYMENT_LINK = ""; // paste TEST Payment Link here
+const CART_KEY = "vvp_cart";
+const PRODUCTS_KEY = "vvp_products";
 
-  // If you configure your Payment Link to redirect back to this page,
-  // you can use a return URL like:
-  //   https://YOUR-SITE/index.html?paid=1&session_id={CHECKOUT_SESSION_ID}
-  // Then this page will show a success notice and clear the cart.
-  const RETURN_SUCCESS_PARAM = "paid";
+/* ================= DEFAULT PRODUCTS ================= */
+const DEFAULT_PRODUCTS = [
+  {id:1,name:"Rocket (cultivated)",price:2,category:"Salad",image:"https://premierseedsdirect.com/wp-content/uploads/2017/12/Rocket-Cultivated-2-021225-iStock-SQ-PS-1024x1024.jpg"},
+  {id:2,name:"Chives",price:2,category:"Herbs",image:"https://images.unsplash.com/photo-1524592911903-1f3b0b5a59f5"}
+];
 
-  /**********************
-   * STORAGE KEYS
-   **********************/
-  const CART_KEY = "vvp_cart_v2";
-  const PRODUCTS_KEY = "vvp_products_v2";
+/* ================= STATE ================= */
+let products = [...DEFAULT_PRODUCTS];
+let cart = [];
+let currentCategory = "All";
+let currentSearch = "";
+let currentSort = "name_asc";
 
-  /**********************
-   * DEFAULT PRODUCTS
-   **********************/
-  const DEFAULT_PRODUCTS = [
-    {id:1,  name:"rocket (cultivated)",          price:2.00, category:"Salad",      image:"https://premierseedsdirect.com/wp-content/uploads/2017/12/Rocket-Cultivated-2-021225-iStock-SQ-PS-1024x1024.jpg"},
-    {id:2,  name:"red lettuce (salad bowl)",     price:2.50, category:"Salad",      image:"https://www.harrisseeds.com/cdn/shop/files/01527_900x.jpg?v=1736905903"},
-    {id:3,  name:"carrot (Nantes 2)",            price:3.50, category:"Roots",      image:"https://gardenerspath.com/wp-content/uploads/2025/01/Carrots-Ready-to-Harvest-in-the-Garden-2.jpg"},
-    {id:4,  name:"tomato (agura)",               price:2.00, category:"Salad",      image:"https://media.istockphoto.com/id/512694992/photo/young-tomato-plant-growing-tomato-in-garden.jpg?s=170667a&w=0&k=20&c=2uXN2qMYOR1ZIuG1lQYFQZyGTN4CTLzaPHSL16JCsXY="},
-    {id:5,  name:"spinach (perpetual)",          price:2.50, category:"Salad",      image:"https://premierseedsdirect.com/wp-content/uploads/2017/02/41579623-2.jpg"},
-    {id:6,  name:"tomato (idyll)",               price:2.50, category:"Salad",      image:"https://www.jungepflanzen.de/media/5d/2c/99/1701199480/solanum_lycopersicum_idyll_1.jpg?ts=1701199480"},
-    {id:7,  name:"chives",                       price:2.00, category:"Herbs",      image:"https://images.unsplash.com/photo-1524592911903-1f3b0b5a59f5?auto=format&fit=crop&w=1200&q=60"},
-    {id:8,  name:"sorrel (garden)",              price:2.50, category:"Herbs",      image:"https://www.epicgardening.com/wp-content/uploads/2023/02/sorrel-plant-1200x667.jpeg"},
-    {id:9,  name:"cauliflower (all season)",     price:2.50, category:"Salad",      image:"https://growplant.org/wp-content/uploads/2024/11/cauliflower-life-cycle-2.jpg"},
-    {id:10, name:"french bean (Ferrari)",        price:2.00, category:"Beans",      image:"https://images.unsplash.com/photo-1598032895397-b9472444bf93?auto=format&fit=crop&w=1200&q=60"},
-    {id:11, name:"broccoli (Calabrese)",         price:2.50, category:"Salad",      image:"https://images.unsplash.com/photo-1582515073490-dc84e2060b44?auto=format&fit=crop&w=1200&q=60"},
-    {id:12, name:"beetroot (Detroit)",           price:2.00, category:"Roots",      image:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=1200&q=60"},
-    {id:13, name:"swiss chard (mixed)",          price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1584270354949-1f5a3a8f1e3b?auto=format&fit=crop&w=1200&q=60"},
-    {id:14, name:"carrot (Cosmic purple)",       price:2.50, category:"Roots",      image:"https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=1200&q=60"},
-    {id:15, name:"curly kale (Nero Di Toscana)", price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1587049352846-4a1a278e6b76?auto=format&fit=crop&w=1200&q=60"},
-    {id:16, name:"parsley",                      price:2.50, category:"Herbs",      image:"https://images.unsplash.com/photo-1587731556938-38755b4803a6?auto=format&fit=crop&w=1200&q=60"},
-    {id:17, name:"cabbage (brunswick)",          price:3.00, category:"Salad",      image:"https://images.unsplash.com/photo-1518977956815-dee0064f6a5a?auto=format&fit=crop&w=1200&q=60"},
-    {id:18, name:"basil (genovese)",             price:2.50, category:"Herbs",      image:"https://images.unsplash.com/photo-1515586838455-8f8f940d6853?auto=format&fit=crop&w=1200&q=60"},
-    {id:19, name:"mixed herb seeds",             price:2.20, category:"Seeds",      image:"https://images.unsplash.com/photo-1457530378978-8bac673b8062?auto=format&fit=crop&w=1200&q=60"},
-    {id:20, name:"starter gift box",             price:9.99, category:"Gift Boxes", image:"https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=60"}
-  ];
+/* ================= HELPERS ================= */
+const $ = id => document.getElementById(id);
+const money = n => Number(n||0).toFixed(2);
 
-  /**********************
-   * STATE
-   **********************/
-  let isAdmin = false;
-  let products = DEFAULT_PRODUCTS.slice();
-  let cart = []; // [{productId, qty}]
-  let currentCategory = "All";
-  let currentSearch = "";
-  let currentSort = "name_asc";
+/* ================= LOAD / SAVE ================= */
+const load = (k,d)=>JSON.parse(localStorage.getItem(k)||JSON.stringify(d));
+const save = (k,v)=>localStorage.setItem(k,JSON.stringify(v));
 
-  /**********************
-   * HELPERS
-   **********************/
-  const el = (id) => document.getElementById(id);
+products = load(PRODUCTS_KEY, products);
+cart = load(CART_KEY, cart);
 
-  const productList = el("productList");
-  const cartItems = el("cartItems");
-  const countSpan = el("count");
-  const totalSpan = el("total");
-  const cartPanel = el("cartPanel");
-  const backdrop = el("backdrop");
-  const toast = el("toast");
+/* ================= CART ================= */
+let lastFocus = null;
 
-  const shopSection = el("shopSection");
-  const adminSection = el("adminSection");
+function toggleCart(open){
+  const panel = $("cartPanel");
+  const shouldOpen = open ?? !panel.classList.contains("open");
 
-  const loginPanel = el("loginPanel");
-  const adminPanel = el("adminPanel");
-
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add("show");
-    window.clearTimeout(showToast._t);
-    showToast._t = window.setTimeout(() => toast.classList.remove("show"), 2200);
+  if(shouldOpen){
+    lastFocus = document.activeElement;
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+    lastFocus && lastFocus.focus();
   }
 
-  function money(n){ return Number(n || 0).toFixed(2); }
-  function safeStr(s){ return String(s ?? "").trim(); }
-  function normaliseCategory(cat){ return safeStr(cat).toLowerCase(); }
-  function nextProductId(){ return products.length ? Math.max(...products.map(p => Number(p.id))) + 1 : 1; }
-  function findProduct(id){ return products.find(p => Number(p.id) === Number(id)); }
+  panel.classList.toggle("open", shouldOpen);
+  $("backdrop").classList.toggle("show", shouldOpen);
+  if(shouldOpen) $("closeCartBtn").focus();
+}
 
-  function uniqueCategories(){
-    const set = new Set(products.map(p => safeStr(p.category)).filter(Boolean));
-    return ["All", ...Array.from(set).sort((a,b) => a.localeCompare(b))];
-  }
+function updateCart(){
+  $("cartItems").innerHTML = "";
+  let total = 0;
 
-  function saveProducts(){ localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products)); }
-  function loadProducts(){
-    const stored = localStorage.getItem(PRODUCTS_KEY);
-    if (!stored) return;
-    try{
-      const parsed = JSON.parse(stored);
-      if (!Array.isArray(parsed)) return;
-      const cleaned = parsed
-        .filter(p => p && typeof p === "object")
-        .map(p => ({
-          id: Number(p.id),
-          name: safeStr(p.name),
-          price: Number(p.price),
-          category: safeStr(p.category),
-          image: safeStr(p.image) || "https://via.placeholder.com/600x400?text=Plant"
-        }))
-        .filter(p => p.id && p.name && !Number.isNaN(p.price) && p.price > 0 && p.category);
-      if (cleaned.length) products = cleaned;
-    }catch(e){}
-  }
+  cart.forEach((c,i)=>{
+    const p = products.find(x=>x.id===c.id);
+    if(!p) return;
+    total += p.price * c.qty;
 
-  function restoreDefaults(){
-    products = DEFAULT_PRODUCTS.slice();
-    saveProducts();
-    cart = cart.filter(c => findProduct(c.productId));
-    saveCart();
-    currentCategory = "All";
-    renderAll();
-    showToast("Restored default products");
-  }
+    const div = document.createElement("div");
+    div.className="cart-item";
+    div.innerHTML = `
+      <div class="cart-top">
+        <span>${p.name}</span>
+        <span>£${money(p.price*c.qty)}</span>
+      </div>
+      <div class="qty-controls">
+        <button class="qty-btn">-</button>
+        <span>Qty: ${c.qty}</span>
+        <button class="qty-btn">+</button>
+      </div>
+    `;
+    div.querySelectorAll("button")[0].onclick=()=>{c.qty--; if(c.qty<=0)cart.splice(i,1); updateCart();}
+    div.querySelectorAll("button")[1].onclick=()=>{c.qty++; updateCart();}
+    $("cartItems").appendChild(div);
+  });
 
-  function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
-  function loadCart(){
-    const stored = localStorage.getItem(CART_KEY);
-    if (!stored) return;
-    try{
-      const parsed = JSON.parse(stored);
-      if (!Array.isArray(parsed)) return;
-      cart = parsed
-        .map(x => ({ productId: Number(x.productId), qty: Number(x.qty) }))
-        .filter(x => x.productId && x.qty && x.qty > 0);
-      cart = cart.filter(c => findProduct(c.productId));
-    }catch(e){ cart = []; }
-  }
+  $("count").textContent = cart.reduce((s,c)=>s+c.qty,0);
+  $("total").textContent = money(total);
+  save(CART_KEY, cart);
+}
 
-  /**********************
-   * UI: NAV + SECTIONS
-   **********************/
-  function setActiveSection(which){
-    const shopBtn = el("shopNavBtn");
-    const adminBtn = el("adminNavBtn");
+/* ================= PRODUCTS ================= */
+function renderProducts(){
+  const list = $("productList");
+  list.innerHTML = "";
+  const frag = document.createDocumentFragment();
 
-    if (which === "shop"){
-      shopSection.classList.add("active");
-      adminSection.classList.remove("active");
-      shopBtn.classList.add("active");
-      adminBtn.classList.remove("active");
-      shopSection.scrollIntoView({behavior:"smooth"});
-    } else {
-      adminSection.classList.add("active");
-      shopSection.classList.remove("active");
-      adminBtn.classList.add("active");
-      shopBtn.classList.remove("active");
-      adminSection.scrollIntoView({behavior:"smooth"});
-    }
-  }
+  let items = products.filter(p =>
+    (currentCategory==="All"||p.category===currentCategory) &&
+    p.name.toLowerCase().includes(currentSearch)
+  );
 
-  /**********************
-   * UI: CATEGORIES + SORT
-   **********************/
-  function renderCategoryTabs(){
-    const tabs = el("categoryTabs");
-    tabs.innerHTML = "";
-    const cats = uniqueCategories();
+  items.sort((a,b)=>{
+    if(currentSort==="price_asc")return a.price-b.price;
+    if(currentSort==="price_desc")return b.price-a.price;
+    if(currentSort==="name_desc")return b.name.localeCompare(a.name);
+    return a.name.localeCompare(b.name);
+  });
 
-    // Keep selection valid
-    if (!cats.includes(currentCategory)) currentCategory = "All";
+  items.forEach(p=>{
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <div class="meta">
+        <span>${p.category}</span>
+        <span class="price">£${money(p.price)}</span>
+      </div>
+      <button class="btn">Add to Cart</button>
+    `;
+    card.querySelector("button").onclick=()=>{
+      const found = cart.find(x=>x.id===p.id);
+      found ? found.qty++ : cart.push({id:p.id,qty:1});
+      updateCart();
+    };
+    frag.appendChild(card);
+  });
 
-    cats.forEach(cat => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "category-tab" + (cat === currentCategory ? " active" : "");
-      b.textContent = cat;
-      b.addEventListener("click", () => {
-        currentCategory = cat;
-        [...tabs.querySelectorAll(".category-tab")].forEach(x => x.classList.remove("active"));
-        b.classList.add("active");
-        renderProducts();
-      });
-      tabs.appendChild(b);
-    });
-  }
+  list.appendChild(frag);
+}
 
-  function applySort(list){
-    const copy = list.slice();
-    switch(currentSort){
-      case "name_desc": return copy.sort((a,b) => b.name.localeCompare(a.name));
-      case "price_asc": return copy.sort((a,b) => Number(a.price) - Number(b.price));
-      case "price_desc": return copy.sort((a,b) => Number(b.price) - Number(a.price));
-      case "name_asc":
-      default: return copy.sort((a,b) => a.name.localeCompare(b.name));
-    }
-  }
+/* ================= EVENTS ================= */
+$("cartBtn").onclick=()=>toggleCart(true);
+$("closeCartBtn").onclick=()=>toggleCart(false);
+$("backdrop").onclick=()=>toggleCart(false);
 
-  /**********************
-   * UI: PRODUCT LIST
-   **********************/
-  function renderProducts(){
-    productList.innerHTML = "";
-    const searchLower = safeStr(currentSearch).toLowerCase();
-    const catLower = normaliseCategory(currentCategory);
+$("searchBar").oninput=e=>{
+  currentSearch=e.target.value.toLowerCase();
+  renderProducts();
+};
+$("sortSelect").onchange=e=>{
+  currentSort=e.target.value;
+  renderProducts();
+};
 
-    let filtered = products.filter(p => {
-      if (currentCategory !== "All" && normaliseCategory(p.category) !== catLower) return false;
-      if (searchLower && !p.name.toLowerCase().includes(searchLower)) return false;
-      return true;
-    });
+$("clearCartBtn").onclick=()=>{
+  cart=[];
+  updateCart();
+};
 
-    filtered = applySort(filtered);
-
-    if (!filtered.length){
-      const empty = document.createElement("div");
-      empty.className = "notice";
-      empty.innerHTML = "<strong>No plants found.</strong> Try another search or category.";
-      productList.appendChild(empty);
-      return;
-    }
-
-    filtered.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const img = document.createElement("img");
-      img.src = p.image;
-      img.alt = p.name;
-      img.loading = "lazy";
-      img.onerror = () => { img.onerror = null; img.src = "https://via.placeholder.com/600x400?text=Image+Unavailable"; };
-
-      const h3 = document.createElement("h3");
-      h3.textContent = p.name;
-
-      const meta = document.createElement("div");
-      meta.className = "meta";
-
-      const cat = document.createElement("span");
-      cat.textContent = p.category;
-
-      const price = document.createElement("span");
-      price.className = "price";
-      price.textContent = `£${money(p.price)}`;
-
-      meta.appendChild(cat);
-      meta.appendChild(price);
-
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "btn";
-      btn.textContent = "Add to Cart";
-      btn.addEventListener("click", () => addItem(p.id));
-
-      card.appendChild(img);
-      card.appendChild(h3);
-      card.appendChild(meta);
-      card.appendChild(btn);
-
-      productList.appendChild(card);
-    });
-  }
-
-  /**********************
-   * CART
-   **********************/
-  function addItem(productId){
-    const p = findProduct(productId);
-    if (!p) return;
-    const existing = cart.find(c => Number(c.productId) === Number(productId));
-    if (existing) existing.qty += 1;
-    else cart.push({ productId: Number(productId), qty: 1 });
-    updateCart();
-    showToast("Added to cart");
-  }
-
-  function removeItem(index){
-    cart.splice(index, 1);
-    updateCart();
-  }
-
-  function changeQty(index, delta){
-    if (!cart[index]) return;
-    cart[index].qty += delta;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
-    updateCart();
-  }
-
-  function clearCart(){
-    cart = [];
-    updateCart();
-    showToast("Cart cleared");
-  }
-
-  function updateCart(){
-    cartItems.innerHTML = "";
-    let total = 0;
-
-    cart.forEach((c, i) => {
-      const p = findProduct(c.productId);
-      if (!p) return;
-
-      const lineTotal = Number(p.price) * Number(c.qty);
-      total += lineTotal;
-
-      const row = document.createElement("div");
-      row.className = "cart-item";
-
-      const top = document.createElement("div");
-      top.className = "cart-top";
-
-      const name = document.createElement("span");
-      name.textContent = p.name;
-
-      const line = document.createElement("span");
-      line.textContent = `£${money(lineTotal)}`;
-
-      top.appendChild(name);
-      top.appendChild(line);
-
-      const qtyRow = document.createElement("div");
-      qtyRow.className = "cart-qty-row";
-
-      const qtyControls = document.createElement("div");
-      qtyControls.className = "qty-controls";
-
-      const minus = document.createElement("button");
-      minus.type = "button";
-      minus.className = "qty-btn";
-      minus.textContent = "-";
-      minus.addEventListener("click", () => changeQty(i, -1));
-
-      const qty = document.createElement("span");
-      qty.textContent = `Qty: ${c.qty}`;
-
-      const plus = document.createElement("button");
-      plus.type = "button";
-      plus.className = "qty-btn";
-      plus.textContent = "+";
-      plus.addEventListener("click", () => changeQty(i, 1));
-
-      qtyControls.appendChild(minus);
-      qtyControls.appendChild(qty);
-      qtyControls.appendChild(plus);
-
-      const remove = document.createElement("button");
-      remove.type = "button";
-      remove.className = "btn btn-danger";
-      remove.style.padding = "8px 12px";
-      remove.style.borderRadius = "12px";
-      remove.style.fontSize = "12px";
-      remove.textContent = "Remove";
-      remove.addEventListener("click", () => removeItem(i));
-
-      qtyRow.appendChild(qtyControls);
-      qtyRow.appendChild(remove);
-
-      row.appendChild(top);
-      row.appendChild(qtyRow);
-      cartItems.appendChild(row);
-    });
-
-    const count = cart.reduce((sum, c) => sum + Number(c.qty), 0);
-    countSpan.textContent = String(count);
-    totalSpan.textContent = money(total);
-
-    saveCart();
-  }
-
-  function toggleCart(open){
-    const isOpen = cartPanel.classList.contains("open");
-    const shouldOpen = (typeof open === "boolean") ? open : !isOpen;
-    cartPanel.classList.toggle("open", shouldOpen);
-    backdrop.classList.toggle("show", shouldOpen);
-    backdrop.setAttribute("aria-hidden", shouldOpen ? "false" : "true");
-  }
-
-  /**********************
-   * STRIPE PAYMENT LINK CHECKOUT (STATIC)
-   **********************/
-  function cartTotalInPence(){
-    let total = 0;
-    for (const c of cart){
-      const p = findProduct(c.productId);
-      if (p) total += Number(p.price) * Number(c.qty);
-    }
-    return Math.round(total * 100);
-  }
-
-  function payNow(){
-    if (!cart.length){
-      alert("Your cart is empty.");
-      return;
-    }
-
-    // If Stripe Payment Link is configured, redirect there (test mode link works on static sites).
-    if (safeStr(STRIPE_PAYMENT_LINK)){
-      // Optional: pass a reference ID. This doesn't change line items (Payment Links are fixed),
-      // but can help you reconcile in Stripe if you use webhooks later.
-      const ref = encodeURIComponent("vvp_" + Date.now());
-      const url = STRIPE_PAYMENT_LINK + (STRIPE_PAYMENT_LINK.includes("?") ? "&" : "?") + "client_reference_id=" + ref;
-
-      // Save a snapshot locally (for your own demo record)
-      localStorage.setItem("vvp_last_checkout_ref", ref);
-      localStorage.setItem("vvp_last_checkout_cart", JSON.stringify({ ref, cart, totalPence: cartTotalInPence(), at: new Date().toISOString() }));
-
-      // Redirect to Stripe hosted checkout
-      window.location.href = url;
-      return;
-    }
-
-    // Fallback: mock checkout
-    alert("Payment Successful (Mock Checkout)\n\nTip: paste a Stripe TEST Payment Link into STRIPE_PAYMENT_LINK to use Stripe.");
-    cart = [];
+$("payBtn").onclick=()=>{
+  if(!cart.length) return alert("Cart is empty");
+  if(STRIPE_PAYMENT_LINK){
+    window.location.href = STRIPE_PAYMENT_LINK;
+  } else {
+    alert("Mock payment successful");
+    cart=[];
     updateCart();
     toggleCart(false);
   }
+};
 
-  /**********************
-   * ADMIN LOGIN + CRUD
-   **********************/
-  function login(){
-    const u = safeStr(el("user").value);
-    const p = safeStr(el("pass").value);
-    if (u === "admin@vvp" && p === "vegvegpla.admin@admin"){
-      isAdmin = true;
-      adminPanel.style.display = "block";
-      loginPanel.style.display = "none";
-      populateEditSelect();
-      populateCategorySelects();
-      showToast("Logged in as admin");
-      adminPanel.scrollIntoView({ behavior: "smooth" });
-    } else {
-      alert("Wrong login");
-    }
-  }
-
-  function logout(){
-    isAdmin = false;
-    adminPanel.style.display = "none";
-    loginPanel.style.display = "block";
-    el("user").value = "";
-    el("pass").value = "";
-    showToast("Logged out");
-  }
-
-  function populateCategorySelects(){
-    const cats = uniqueCategories().filter(c => c !== "All");
-    const addSel = el("category");
-    const editSel = el("editCategory");
-
-    [addSel, editSel].forEach(sel => {
-      sel.innerHTML = "";
-      cats.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c;
-        sel.appendChild(opt);
-      });
-    });
-
-    // If no categories exist, provide a default list
-    if (!cats.length){
-      ["Herbs","Roots","Salad","Beans","Seeds","Gift Boxes"].forEach(c => {
-        const opt1 = document.createElement("option");
-        opt1.value = c; opt1.textContent = c;
-        addSel.appendChild(opt1);
-        const opt2 = document.createElement("option");
-        opt2.value = c; opt2.textContent = c;
-        editSel.appendChild(opt2);
-      });
-    }
-  }
-
-  function addProduct(){
-    if (!isAdmin) return;
-
-    const name = safeStr(el("name").value);
-    const priceValue = Number(el("price").value);
-    const image = safeStr(el("image").value);
-    const category = safeStr(el("category").value);
-
-    if (!name || Number.isNaN(priceValue) || priceValue <= 0){
-      alert("Please enter a name and a valid price.");
-      return;
-    }
-    if (!category){
-      alert("Please choose a category.");
-      return;
-    }
-
-    const newP = {
-      id: nextProductId(),
-      name,
-      price: Number(priceValue.toFixed(2)),
-      image: image || "https://via.placeholder.com/600x400?text=Plant",
-      category
-    };
-
-    products.push(newP);
-    saveProducts();
-
-    el("name").value = "";
-    el("price").value = "";
-    el("image").value = "";
-
-    renderAll();
-    populateEditSelect();
-    showToast("Product added");
-  }
-
-  function populateEditSelect(){
-    const select = el("editSelect");
-    select.innerHTML = "";
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "-- Select --";
-    select.appendChild(placeholder);
-
-    products.slice().sort((a,b) => a.name.localeCompare(b.name)).forEach(p => {
-      const opt = document.createElement("option");
-      opt.value = String(p.id);
-      opt.textContent = `${p.name} (£${money(p.price)})`;
-      select.appendChild(opt);
-    });
-  }
-
-  function loadProductForEdit(){
-    const id = Number(el("editSelect").value);
-    if (!id) return;
-    const p = findProduct(id);
-    if (!p) return;
-    el("editName").value = p.name;
-    el("editPrice").value = money(p.price);
-    el("editImage").value = p.image;
-    el("editCategory").value = p.category;
-  }
-
-  function saveEditedProduct(){
-    if (!isAdmin) return;
-
-    const id = Number(el("editSelect").value);
-    if (!id){
-      alert("Select a product to edit.");
-      return;
-    }
-
-    const p = findProduct(id);
-    if (!p) return;
-
-    const name = safeStr(el("editName").value);
-    const priceValue = Number(el("editPrice").value);
-    const image = safeStr(el("editImage").value);
-    const category = safeStr(el("editCategory").value);
-
-    if (!name || Number.isNaN(priceValue) || priceValue <= 0){
-      alert("Please enter a name and a valid price.");
-      return;
-    }
-    if (!category){
-      alert("Please choose a category.");
-      return;
-    }
-
-    p.name = name;
-    p.price = Number(priceValue.toFixed(2));
-    p.image = image || "https://via.placeholder.com/600x400?text=Plant";
-    p.category = category;
-
-    saveProducts();
-
-    cart = cart.filter(c => findProduct(c.productId));
-    saveCart();
-
-    renderAll();
-    populateEditSelect();
-    showToast("Product updated");
-  }
-
-  function deleteProduct(){
-    if (!isAdmin) return;
-
-    const id = Number(el("editSelect").value);
-    if (!id){
-      alert("Select a product to delete.");
-      return;
-    }
-
-    const p = findProduct(id);
-    if (!p) return;
-
-    const ok = confirm(`Delete "${p.name}"? This cannot be undone (unless you restore defaults).`);
-    if (!ok) return;
-
-    products = products.filter(x => Number(x.id) !== id);
-    saveProducts();
-
-    cart = cart.filter(c => Number(c.productId) !== id);
-    saveCart();
-
-    el("editSelect").value = "";
-    el("editName").value = "";
-    el("editPrice").value = "";
-    el("editImage").value = "";
-
-    renderAll();
-    populateEditSelect();
-    showToast("Product deleted");
-  }
-
-  function exportJSON(){
-    if (!isAdmin) return;
-    el("jsonBox").value = JSON.stringify(products, null, 2);
-    showToast("Exported to JSON box");
-  }
-
-  function importJSON(){
-    if (!isAdmin) return;
-    const text = safeStr(el("jsonBox").value);
-    if (!text){
-      alert("Paste JSON into the box first.");
-      return;
-    }
-    try{
-      const parsed = JSON.parse(text);
-      if (!Array.isArray(parsed)){
-        alert("JSON must be an array of products.");
-        return;
-      }
-      const cleaned = parsed
-        .filter(p => p && typeof p === "object")
-        .map(p => ({
-          id: Number(p.id),
-          name: safeStr(p.name),
-          price: Number(p.price),
-          category: safeStr(p.category),
-          image: safeStr(p.image) || "https://via.placeholder.com/600x400?text=Plant"
-        }))
-        .filter(p => p.id && p.name && !Number.isNaN(p.price) && p.price > 0 && p.category);
-
-      if (!cleaned.length){
-        alert("No valid products found in JSON.");
-        return;
-      }
-
-      const ids = new Set();
-      for (const p of cleaned){
-        if (ids.has(p.id)){
-          alert("Duplicate product IDs found. Please ensure IDs are unique.");
-          return;
-        }
-        ids.add(p.id);
-      }
-
-      products = cleaned;
-      saveProducts();
-
-      cart = cart.filter(c => findProduct(c.productId));
-      saveCart();
-
-      renderAll();
-      populateEditSelect();
-      showToast("Imported products");
-    }catch(e){
-      alert("Invalid JSON.");
-    }
-  }
-
-  function clearSavedData(){
-    const ok = confirm("Clear saved products + cart on this device? (Defaults will load again)");
-    if (!ok) return;
-    localStorage.removeItem(PRODUCTS_KEY);
-    localStorage.removeItem(CART_KEY);
-    products = DEFAULT_PRODUCTS.slice();
-    cart = [];
-    currentCategory = "All";
-    renderAll();
-    showToast("Cleared saved data");
-  }
-
-  /**********************
-   * SUCCESS RETURN HANDLING (STATIC)
-   **********************/
-  function handleReturnFromStripe(){
-    const params = new URLSearchParams(window.location.search);
-    if (params.get(RETURN_SUCCESS_PARAM) === "1"){
-      // Clear cart locally (demo)
-      cart = [];
-      saveCart();
-      updateCart();
-
-      const box = el("orderNotice");
-      if (box) box.style.display = "block";
-    }
-  }
-
-  /**********************
-   * RENDER ALL
-   **********************/
-  function renderAll(){
-    renderCategoryTabs();
-    renderProducts();
-    updateCart();
-    populateCategorySelects();
-  }
-
-  /**********************
-   * EVENTS
-   **********************/
-  el("cartBtn").addEventListener("click", () => toggleCart());
-  el("closeCartBtn").addEventListener("click", () => toggleCart(false));
-  backdrop.addEventListener("click", () => toggleCart(false));
-
-  el("payBtn").addEventListener("click", payNow);
-  el("clearCartBtn").addEventListener("click", clearCart);
-
-  el("shopNavBtn").addEventListener("click", () => setActiveSection("shop"));
-  el("adminNavBtn").addEventListener("click", () => setActiveSection("admin"));
-
-  el("searchBar").addEventListener("input", (e) => {
-    currentSearch = e.target.value;
-    renderProducts();
-  });
-
-  el("sortSelect").addEventListener("change", (e) => {
-    currentSort = e.target.value;
-    renderProducts();
-  });
-
-  el("loginBtn").addEventListener("click", login);
-  el("logoutBtn").addEventListener("click", logout);
-
-  el("addProductBtn").addEventListener("click", addProduct);
-  el("editSelect").addEventListener("change", loadProductForEdit);
-  el("saveEditBtn").addEventListener("click", saveEditedProduct);
-  el("deleteBtn").addEventListener("click", deleteProduct);
-
-  el("restoreDefaultsBtn").addEventListener("click", () => {
-    const ok = confirm("Restore default products? This will overwrite saved products.");
-    if (ok) restoreDefaults();
-  });
-
-  el("exportBtn").addEventListener("click", exportJSON);
-  el("importBtn").addEventListener("click", importJSON);
-  el("clearAllBtn").addEventListener("click", clearSavedData);
-
-  // ESC closes cart
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") toggleCart(false);
-  });
-
-  /**********************
-   * INIT
-   **********************/
-  loadProducts();
-  loadCart();
-  renderAll();
-  handleReturnFromStripe();
+/* ================= INIT ================= */
+renderProducts();
+updateCart();
 
 })();
 </script>
 
 </body>
 </html>
+``
